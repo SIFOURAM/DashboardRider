@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SI FOUR AM - Mobile Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #111111; color: #ffffff; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
+        .card { background-color: #1e1e1e; border-radius: 0.75rem; border: 1px solid #333; padding: 1rem; }
+        .text-orange-sifour { color: #f97316; }
+        .bg-orange-sifour { background-color: #f97316; }
+        .terpilih-oren { background-color: #fff7ed; color: #ea580c; border-color: #f97316 !important; font-weight: bold;}
+        .error-merah { background-color: #fee2e2; color: #b91c1c; border-color: #ef4444 !important; animation: shake 0.5s;}
+        @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+    </style>
+</head>
+<body class="pb-10">
+
+    <div class="bg-[#1a1a1a] p-4 border-b border-neutral-800 sticky top-0 z-50">
+        <h1 class="text-xl font-black text-center tracking-wider text-orange-sifour mb-4">DASHBOARD SI FOUR AM</h1>
+        <div class="relative">
+            <select id="riderSelect" class="w-full bg-neutral-800 text-white border border-neutral-600 rounded-lg p-3 appearance-none focus:outline-none transition-colors duration-300">
+                <option value="" disabled selected>-- Pilih Rider --</option>
+                <option value="ACHMAD DARMADI">ACHMAD DARMADI</option>
+                <option value="RICKY AKBAR">RICKY AKBAR</option>
+                <option value="JUNAEDI">JUNAEDI</option>
+                <option value="IRWAN SYAHPUTRA">IRWAN SYAHPUTRA</option>
+                <option value="RIJALDI JANUAR">RIJALDI JANUAR</option>
+                <option value="RIZKY AKBAR ZAFIRA">RIZKY AKBAR ZAFIRA</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">▼</div>
+        </div>
+    </div>
+
+    <div class="p-4 space-y-4 max-w-lg mx-auto">
+        <div class="card space-y-3">
+            <div class="flex items-center gap-2 text-sm font-bold text-gray-300"><span>📅</span> Filter Periode</div>
+            <select id="periodeSelect" class="w-full bg-neutral-700 text-white rounded p-2 text-sm border border-neutral-600 focus:outline-none focus:border-orange-500" onchange="aturTanggalOtomatis()">
+                <option value="hari_ini">Hari Ini</option>
+                <option value="kemarin">Kemarin</option>
+                <option value="minggu_ini">Minggu Ini</option>
+                <option value="bulan_ini">Bulan Ini</option>
+                <option value="kustom">Pilih Kustom</option>
+            </select>
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase">Mulai</label>
+                    <input type="date" id="tglMulai" class="w-full bg-neutral-700 text-white rounded p-2 text-xs border border-neutral-600">
+                </div>
+                <div>
+                    <label class="text-[10px] text-gray-400 uppercase">Sampai</label>
+                    <input type="date" id="tglAkhir" class="w-full bg-neutral-700 text-white rounded p-2 text-xs border border-neutral-600">
+                </div>
+            </div>
+            <button onclick="terapkanFilter()" class="w-full bg-orange-sifour text-white font-bold py-2 rounded-lg text-sm hover:bg-orange-600 transition">TERAPKAN</button>
+            <div id="teksInfoFilter" class="text-center text-xs text-emerald-400 font-medium hidden pt-2"></div>
+        </div>
+
+        <div id="loading" class="text-center text-sm text-gray-400 py-10">Memuat Data Database...</div>
+
+        <div id="dashboardContent" class="hidden space-y-4">
+            
+            <div class="card flex flex-col items-center justify-center text-center space-y-1">
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Total Penjualan Cup</p>
+                <h2 id="valPenjualan" class="text-4xl font-black text-white">0</h2>
+            </div>
+            
+            <div class="card flex flex-col items-center justify-center text-center space-y-1">
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Total Komisi Rider</p>
+                <h2 id="valKomisi" class="text-3xl font-bold text-emerald-400">Rp 0</h2>
+            </div>
+
+            <div class="card flex flex-col items-center justify-center text-center space-y-1 border border-orange-500/30">
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Total Komisi + Bonus (Rp24rb/Hari)</p>
+                <h2 id="valTotalBersih" class="text-3xl font-black text-orange-sifour">Rp 0</h2>
+            </div>
+
+            <div class="card flex flex-col items-center justify-center text-center space-y-1">
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Peringkat Penjualan</p>
+                <h2 id="valPeringkat" class="text-2xl font-bold text-yellow-400">-</h2>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="card flex flex-col justify-between">
+                    <p class="text-[10px] text-gray-400 uppercase tracking-wider mb-2">Target & Gap Analisis</p>
+                    <h3 id="valGapNominal" class="text-lg font-bold text-red-400">0 Cup</h3>
+                    <p id="valStatusTarget" class="text-[10px] text-gray-300 mt-1 leading-tight">Belum mencapai target 900</p>
+                </div>
+                <div class="card flex flex-col justify-between">
+                    <p class="text-[10px] text-gray-400 uppercase tracking-wider mb-2 text-right">Sisa Hutang Rider</p>
+                    <h3 id="valHutang" class="text-xl font-bold text-white text-right">Rp 0</h3>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="text-xs text-gray-400 uppercase tracking-widest mb-3">Grafik Perbandingan Penjualan</h3>
+                <canvas id="chartRider" height="200"></canvas>
+            </div>
+
+            <div class="card">
+                <h3 class="text-xs text-gray-400 uppercase tracking-widest mb-3">Grafik Menu Terlaris</h3>
+                <canvas id="chartMenu" height="250"></canvas>
+            </div>
+
+            <div class="card overflow-hidden">
+                <h3 class="text-xs text-gray-400 uppercase tracking-widest mb-3">Data Stock Terakhir <span id="tglTerakhirSpan" class="text-orange-sifour"></span></h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-[10px]">
+                        <thead class="bg-neutral-800 text-gray-300 uppercase">
+                            <tr>
+                                <th class="p-2 rounded-tl">Produk</th>
+                                <th class="p-2 text-center">Awal</th>
+                                <th class="p-2 text-center">Bonus</th>
+                                <th class="p-2 text-center">Tunai</th>
+                                <th class="p-2 text-center">QRIS</th>
+                                <th class="p-2 text-center">Sisa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelDataTerakhir" class="text-gray-300 divide-y divide-neutral-800"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================================
+        // WAJIB GANTI URL DI BAWAH DENGAN URL DEPLOYMENT APPS SCRIPT
+        // ==========================================================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyodTYJJw8CLxBJeDIyEqi6YTzT9Muq7A4HJMclRoOCM1lZIBA66A2fhH71ClINRUIL/exec"; 
+        
+        let database = { laporan: [], detail: [], hutang_list: [] };
+        let chartRiderObj = null;
+        let chartMenuObj = null;
+
+        window.onload = async () => {
+            aturTanggalOtomatis();
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getAllData`);
+                database = await response.json();
+                document.getElementById('loading').style.display = 'none';
+            } catch (err) {
+                document.getElementById('loading').innerText = "Gagal memuat data. Muat ulang halaman.";
+            }
+        };
+
+        document.getElementById('riderSelect').addEventListener('change', function() {
+            this.classList.remove('error-merah');
+            this.classList.add('terpilih-oren');
+        });
+
+        function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); }
+
+        function aturTanggalOtomatis() {
+            const periode = document.getElementById('periodeSelect').value;
+            const tglMulai = document.getElementById('tglMulai');
+            const tglAkhir = document.getElementById('tglAkhir');
+            const hariIni = new Date();
+            let start = new Date(); let end = new Date();
+
+            if (periode === 'kemarin') { start.setDate(hariIni.getDate() - 1); end.setDate(hariIni.getDate() - 1); } 
+            else if (periode === 'minggu_ini') { const day = hariIni.getDay(); const diff = hariIni.getDate() - day + (day == 0 ? -6 : 1); start = new Date(hariIni.setDate(diff)); end = new Date(); } 
+            else if (periode === 'bulan_ini') { start = new Date(hariIni.getFullYear(), hariIni.getMonth(), 1); end = new Date(hariIni.getFullYear(), hariIni.getMonth() + 1, 0); } 
+            else if (periode === 'kustom') return;
+
+            tglMulai.value = start.toISOString().split('T')[0];
+            tglAkhir.value = end.toISOString().split('T')[0];
+        }
+
+        function formatDateDisplay(dateStr) { return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); }
+
+        function terapkanFilter() {
+            const riderSelect = document.getElementById('riderSelect');
+            const namaRider = riderSelect.value;
+            
+            if (!namaRider) {
+                riderSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                riderSelect.classList.remove('terpilih-oren');
+                riderSelect.classList.add('error-merah');
+                return;
+            }
+
+            if(database.laporan.length === 0) return alert("Data masih dimuat, harap tunggu.");
+
+            const tglMulaiStr = document.getElementById('tglMulai').value;
+            const tglAkhirStr = document.getElementById('tglAkhir').value;
+            const tMulai = new Date(tglMulaiStr).setHours(0,0,0,0);
+            const tAkhir = new Date(tglAkhirStr).setHours(23,59,59,999);
+
+            const labelPeriode = document.getElementById('periodeSelect').options[document.getElementById('periodeSelect').selectedIndex].text;
+            const info = document.getElementById('teksInfoFilter');
+            info.innerHTML = `Menampilkan data <b>${labelPeriode}</b><br>(${formatDateDisplay(tglMulaiStr)} - ${formatDateDisplay(tglAkhirStr)})`;
+            info.classList.remove('hidden');
+
+            document.getElementById('dashboardContent').classList.remove('hidden');
+            kalkulasiDashboard(namaRider, tMulai, tAkhir);
+        }
+
+        function kalkulasiDashboard(rider, tMulai, tAkhir) {
+            const laporanFiltered = database.laporan.filter(d => { let dTime = new Date(d.tanggal).getTime(); return dTime >= tMulai && dTime <= tAkhir; });
+            const detailFiltered = database.detail.filter(d => { let dTime = new Date(d.tanggal).getTime(); return dTime >= tMulai && dTime <= tAkhir; });
+
+            const laporanRider = laporanFiltered.filter(d => d.driver === rider);
+            let totalCup = 0; let totalKomisi = 0; let hariKerjaSet = new Set(); let sisaHutangTerakhir = 0;
+
+            laporanRider.forEach(d => { totalCup += d.volume; totalKomisi += d.komisi; hariKerjaSet.add(d.tanggal); });
+
+            const semuaLaporanRider = database.laporan.filter(d => d.driver === rider);
+            if(semuaLaporanRider.length > 0) {
+                semuaLaporanRider.sort((a,b) => new Date(a.tanggal) - new Date(b.tanggal));
+                sisaHutangTerakhir = semuaLaporanRider[semuaLaporanRider.length - 1].sisa_hutang;
+            } else {
+                const hd = database.hutang_list.find(h => h.driver === rider);
+                if(hd) sisaHutangTerakhir = hd.nominal;
+            }
+
+            const totalBonus = hariKerjaSet.size * 24000;
+            const komisiPlusBonus = totalKomisi + totalBonus;
+
+            document.getElementById('valPenjualan').innerText = totalCup;
+            document.getElementById('valKomisi').innerText = formatRupiah(totalKomisi);
+            document.getElementById('valTotalBersih').innerText = formatRupiah(komisiPlusBonus);
+            document.getElementById('valHutang').innerText = formatRupiah(sisaHutangTerakhir);
+
+            let targetTerdekat = 0; let targetPrev = 0; let statusTeks = ""; let gap = 0;
+            if (totalCup < 900) { targetTerdekat = 900; gap = 900 - totalCup; statusTeks = "Belum mencapai target 900"; } 
+            else if (totalCup >= 900 && totalCup < 1200) { targetTerdekat = 1200; targetPrev = 900; gap = 1200 - totalCup; statusTeks = `Mencapai target ${targetPrev} menuju ${targetTerdekat}`; } 
+            else if (totalCup >= 1200 && totalCup < 1500) { targetTerdekat = 1500; targetPrev = 1200; gap = 1500 - totalCup; statusTeks = `Mencapai target ${targetPrev} menuju ${targetTerdekat}`; } 
+            else { gap = 0; statusTeks = "Target maksimal (>1500) tercapai!"; }
+
+            document.getElementById('valGapNominal').innerText = gap > 0 ? `${gap} Cup` : "0 Cup";
+            document.getElementById('valStatusTarget').innerText = statusTeks;
+
+            let agregatSemuaRider = {};
+            laporanFiltered.forEach(d => { if(!agregatSemuaRider[d.driver]) agregatSemuaRider[d.driver] = 0; agregatSemuaRider[d.driver] += d.volume; });
+            let arrayPeringkat = Object.keys(agregatSemuaRider).map(nama => { return { nama: nama, cup: agregatSemuaRider[nama] }; });
+            arrayPeringkat.sort((a, b) => b.cup - a.cup); 
+            let rankIndex = arrayPeringkat.findIndex(p => p.nama === rider);
+            document.getElementById('valPeringkat').innerText = rankIndex !== -1 ? `#${rankIndex + 1}` : "Tidak ada data";
+
+            let labelsChart1 = arrayPeringkat.map(p => p.nama.split(' ')[0]);
+            let dataChart1 = arrayPeringkat.map(p => p.cup);
+
+            if(chartRiderObj) chartRiderObj.destroy();
+            chartRiderObj = new Chart(document.getElementById('chartRider').getContext('2d'), {
+                type: 'bar',
+                data: { labels: labelsChart1, datasets: [{ label: 'Total Penjualan Cup', data: dataChart1, backgroundColor: arrayPeringkat.map(p => p.nama === rider ? '#f97316' : '#404040'), borderRadius: 4 }] },
+                options: { responsive: true, scales: { y: { min: 0, max: 2000, grid: {color: '#333'} }, x: { grid: {display: false} } }, plugins: { legend: {display: false} } }
+            });
+
+            let detailRider = detailFiltered.filter(d => d.driver === rider);
+            let agregatMenu = {};
+            detailRider.forEach(d => { if(!agregatMenu[d.produk]) agregatMenu[d.produk] = 0; agregatMenu[d.produk] += d.total_terjual; });
+            let arrayMenu = Object.keys(agregatMenu).map(nama => { return { menu: nama, cup: agregatMenu[nama] }});
+            arrayMenu.sort((a,b) => b.cup - a.cup);
+
+            let labelsChart2 = arrayMenu.map(p => p.menu.replace('SI ', ''));
+            let dataChart2 = arrayMenu.map(p => p.cup);
+
+            if(chartMenuObj) chartMenuObj.destroy();
+            chartMenuObj = new Chart(document.getElementById('chartMenu').getContext('2d'), {
+                type: 'bar',
+                data: { labels: labelsChart2, datasets: [{ label: 'Cup Terjual', data: dataChart2, backgroundColor: '#10b981', borderRadius: 4 }] },
+                options: { indexAxis: 'y', responsive: true, scales: { x: { grid: {color: '#333'} }, y: { grid: {display: false}, ticks: { font: {size: 10} } } }, plugins: { legend: {display: false} } }
+            });
+
+            const semuaDetailRider = database.detail.filter(d => d.driver === rider);
+            const tbody = document.getElementById('tabelDataTerakhir');
+            tbody.innerHTML = '';
+            
+            if(semuaDetailRider.length > 0) {
+                semuaDetailRider.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+                const tglPalingAkhir = semuaDetailRider[0].tanggal;
+                document.getElementById('tglTerakhirSpan').innerText = `(${formatDateDisplay(tglPalingAkhir)})`;
+
+                const dataTabel = semuaDetailRider.filter(d => d.tanggal === tglPalingAkhir);
+                dataTabel.forEach(d => {
+                    tbody.innerHTML += `
+                        <tr class="border-b border-neutral-800">
+                            <td class="p-2 truncate max-w-[100px]">${d.produk.replace('SI ','')}</td>
+                            <td class="p-2 text-center text-gray-400">${d.stok_awal}</td>
+                            <td class="p-2 text-center text-blue-400">${d.bonus}</td>
+                            <td class="p-2 text-center text-emerald-400">${d.terjual_tunai}</td>
+                            <td class="p-2 text-center text-purple-400">${d.terjual_qris}</td>
+                            <td class="p-2 text-center font-bold text-orange-400">${d.sisa}</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                document.getElementById('tglTerakhirSpan').innerText = "(Tidak Ada Data)";
+                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500">Tidak ada rekam jejak.</td></tr>';
+            }
+        }
+    </script>
+</body>
+</html>
