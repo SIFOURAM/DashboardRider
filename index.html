@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SI FOUR AM - Mobile Dashboard</title>
+    <title>Dashboard SI FOUR AM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <style>
         body { background-color: #111111; color: #ffffff; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
-        .card { background-color: #1e1e1e; border-radius: 0.75rem; border: 1px solid #333; padding: 1rem; }
+        .card { background-color: #1e1e1e; border-radius: 0.2rem; border: 1px solid #333; padding: 0.2rem 1rem; } /* PADDING DIPENDEKKAN */
         .text-orange-sifour { color: #f97316; }
         .bg-orange-sifour { background-color: #f97316; }
         .terpilih-oren { background-color: #fff7ed; color: #ea580c; border-color: #f97316 !important; font-weight: bold;}
@@ -20,10 +21,11 @@
 </head>
 <body class="pb-10">
 
-    <div class="bg-[#1a1a1a] p-4 border-b border-neutral-800 sticky top-0 z-50">
-        <h1 class="text-xl font-black text-center tracking-wider text-orange-sifour mb-4">DASHBOARD SI FOUR AM</h1>
-        <div class="relative">
-            <select id="riderSelect" class="w-full bg-neutral-800 text-white border border-neutral-600 rounded-lg p-3 appearance-none focus:outline-none transition-colors duration-300">
+    <div class="bg-[#1a1a1a] p-4 border-b border-neutral-800 sticky top-0 z-50 shadow-md">
+        <h1 class="text-xl font-black text-center tracking-wider text-orange-sifour mb-3">DASHBOARD SI FOUR AM</h1>
+        <div class="relative max-w-lg mx-auto">
+            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1 block">Pilih Rider:</span>
+            <select id="riderSelect" onchange="ubahWarnaRider()" class="w-full bg-neutral-800 text-white border border-neutral-600 rounded-lg p-2.5 appearance-none focus:outline-none transition-colors duration-300">
                 <option value="" disabled selected>-- Pilih Rider --</option>
                 <option value="ACHMAD DARMADI">ACHMAD DARMADI</option>
                 <option value="RICKY AKBAR">RICKY AKBAR</option>
@@ -32,14 +34,14 @@
                 <option value="RIJALDI JANUAR">RIJALDI JANUAR</option>
                 <option value="RIZKY AKBAR ZAFIRA">RIZKY AKBAR ZAFIRA</option>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">▼</div>
+            <div class="pointer-events-none absolute bottom-3 right-0 flex items-center px-4 text-gray-400">▼</div>
         </div>
     </div>
 
-    <div class="p-4 space-y-4 max-w-lg mx-auto">
-        <div class="card space-y-3">
-            <div class="flex items-center gap-2 text-sm font-bold text-gray-300"><span>📅</span> Filter Periode</div>
-            <select id="periodeSelect" class="w-full bg-neutral-700 text-white rounded p-2 text-sm border border-neutral-600 focus:outline-none focus:border-orange-500" onchange="aturTanggalOtomatis()">
+    <div class="p-4 space-y-3 max-w-lg mx-auto">
+        <div class="card space-y-2">
+            <div class="flex items-center gap-2 text-xs font-bold text-gray-300"><span>📅</span> Filter Periode</div>
+            <select id="periodeSelect" class="w-full bg-neutral-700 text-white rounded p-1.5 text-xs border border-neutral-600 focus:outline-none focus:border-orange-500" onchange="aturTanggalOtomatis()">
                 <option value="hari_ini">Hari Ini</option>
                 <option value="kemarin">Kemarin</option>
                 <option value="minggu_ini">Minggu Ini</option>
@@ -48,81 +50,100 @@
             </select>
             <div class="grid grid-cols-2 gap-2">
                 <div>
-                    <label class="text-[10px] text-gray-400 uppercase">Mulai</label>
-                    <input type="date" id="tglMulai" class="w-full bg-neutral-700 text-white rounded p-2 text-xs border border-neutral-600">
+                    <label class="text-[9px] text-gray-400 uppercase">Mulai</label>
+                    <input type="date" id="tglMulai" class="w-full bg-neutral-700 text-white rounded p-1.5 text-xs border border-neutral-600">
                 </div>
                 <div>
-                    <label class="text-[10px] text-gray-400 uppercase">Sampai</label>
-                    <input type="date" id="tglAkhir" class="w-full bg-neutral-700 text-white rounded p-2 text-xs border border-neutral-600">
+                    <label class="text-[9px] text-gray-400 uppercase">Sampai</label>
+                    <input type="date" id="tglAkhir" class="w-full bg-neutral-700 text-white rounded p-1.5 text-xs border border-neutral-600">
                 </div>
             </div>
-            <button onclick="terapkanFilter()" class="w-full bg-orange-sifour text-white font-bold py-2 rounded-lg text-sm hover:bg-orange-600 transition">TERAPKAN</button>
-            <div id="teksInfoFilter" class="text-center text-xs text-emerald-400 font-medium hidden pt-2"></div>
+            <button onclick="mintaPassword()" class="w-full bg-orange-sifour text-white font-bold py-2 rounded-lg text-sm hover:bg-orange-600 transition mt-1 shadow-lg">TERAPKAN</button>
+            <div id="teksInfoFilter" class="text-center text-[10px] text-emerald-400 font-medium hidden pt-1"></div>
         </div>
 
-        <div id="loading" class="text-center text-sm text-gray-400 py-10">Memuat Data Database...</div>
+        <div id="loading" class="text-center text-xs text-gray-400 py-10">Memuat Data Database...</div>
 
-        <div id="dashboardContent" class="hidden space-y-4">
+        <div id="dashboardContent" class="hidden space-y-3">
             
-            <div class="card flex flex-col items-center justify-center text-center space-y-1">
-                <p class="text-xs text-gray-400 uppercase tracking-widest">Total Penjualan Cup</p>
-                <h2 id="valPenjualan" class="text-4xl font-black text-white">0</h2>
+            <div class="card flex flex-col items-center justify-center text-center space-y-0.5">
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Total Penjualan Cup</p>
+                <h2 id="valPenjualan" class="text-3xl font-black text-white">0</h2>
             </div>
             
-            <div class="card flex flex-col items-center justify-center text-center space-y-1">
-                <p class="text-xs text-gray-400 uppercase tracking-widest">Total Komisi Rider</p>
-                <h2 id="valKomisi" class="text-3xl font-bold text-emerald-400">Rp 0</h2>
+            <div class="card flex flex-col items-center justify-center text-center space-y-0.5">
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Total Komisi Rider</p>
+                <h2 id="valKomisi" class="text-2xl font-bold text-emerald-400">Rp 0</h2>
             </div>
 
-            <div class="card flex flex-col items-center justify-center text-center space-y-1 border border-orange-500/30">
-                <p class="text-xs text-gray-400 uppercase tracking-widest">Total Komisi + Bonus (Rp24rb/Hari)</p>
+            <div class="card flex flex-col items-center justify-center text-center space-y-0.5 border border-orange-500/40 bg-orange-900/10">
+                <p class="text-[10px] text-gray-300 uppercase tracking-widest font-bold">Total Komisi + Bonus</p>
                 <h2 id="valTotalBersih" class="text-3xl font-black text-orange-sifour">Rp 0</h2>
             </div>
 
-            <div class="card flex flex-col items-center justify-center text-center space-y-1">
-                <p class="text-xs text-gray-400 uppercase tracking-widest">Peringkat Penjualan</p>
-                <h2 id="valPeringkat" class="text-2xl font-bold text-yellow-400">-</h2>
+            <div class="card flex flex-col items-center justify-center text-center space-y-0.5">
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Peringkat Sales Rider</p>
+                <h2 id="valPeringkat" class="text-xl font-black text-yellow-400 mt-1">-</h2>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-                <div class="card flex flex-col justify-between">
-                    <p class="text-[10px] text-gray-400 uppercase tracking-wider mb-2">Target & Gap Analisis</p>
-                    <h3 id="valGapNominal" class="text-lg font-bold text-red-400">0 Cup</h3>
-                    <p id="valStatusTarget" class="text-[10px] text-gray-300 mt-1 leading-tight">Belum mencapai target 900</p>
+                <div class="card flex flex-col justify-between py-3">
+                    <p class="text-[9px] text-gray-400 uppercase tracking-wider mb-1 font-bold">Target & Gap Analisis</p>
+                    <h3 id="valGapNominal" class="text-base font-black text-red-400">0 Cup</h3>
+                    <p id="valStatusTarget" class="text-[9px] text-gray-300 mt-1 leading-tight">Belum mencapai target</p>
                 </div>
-                <div class="card flex flex-col justify-between">
-                    <p class="text-[10px] text-gray-400 uppercase tracking-wider mb-2 text-right">Sisa Hutang Rider</p>
-                    <h3 id="valHutang" class="text-xl font-bold text-white text-right">Rp 0</h3>
+                <div class="card flex flex-col justify-between py-3">
+                    <p class="text-[9px] text-gray-400 uppercase tracking-wider mb-1 text-right font-bold">Sisa Hutang Rider</p>
+                    <h3 id="valHutang" class="text-lg font-black text-white text-right">Rp 0</h3>
                 </div>
             </div>
 
             <div class="card">
-                <h3 class="text-xs text-gray-400 uppercase tracking-widest mb-3">Grafik Perbandingan Penjualan</h3>
-                <canvas id="chartRider" height="200"></canvas>
+                <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Total Keseluruhan Penjualan Rider</h3>
+                <div class="w-full h-48">
+                    <canvas id="chartRider"></canvas>
+                </div>
             </div>
 
             <div class="card">
-                <h3 class="text-xs text-gray-400 uppercase tracking-widest mb-3">Grafik Menu Terlaris</h3>
-                <canvas id="chartMenu" height="250"></canvas>
+                <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Grafik Menu Terlaris</h3>
+                <div class="w-full h-56">
+                    <canvas id="chartMenu"></canvas>
+                </div>
             </div>
 
-            <div class="card overflow-hidden">
-                <h3 class="text-xs text-gray-400 uppercase tracking-widest mb-3">Data Stock Terakhir <span id="tglTerakhirSpan" class="text-orange-sifour"></span></h3>
+            <div class="card overflow-hidden !p-0">
+                <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest p-3 border-b border-neutral-800">Data Setoran</h3>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-[10px]">
+                    <table class="w-full text-left text-[9px]">
                         <thead class="bg-neutral-800 text-gray-300 uppercase">
                             <tr>
-                                <th class="p-2 rounded-tl">Produk</th>
+                                <th class="p-2">Produk</th>
                                 <th class="p-2 text-center">Awal</th>
-                                <th class="p-2 text-center">Bonus</th>
-                                <th class="p-2 text-center">Tunai</th>
-                                <th class="p-2 text-center">QRIS</th>
+                                <th class="p-2 text-center">Bns</th>
                                 <th class="p-2 text-center">Sisa</th>
+                                <th class="p-2 text-center">Tun</th>
+                                <th class="p-2 text-center">QRIS</th>
+                                <th class="p-2 text-center text-orange-400 font-bold">Tot</th>
                             </tr>
                         </thead>
-                        <tbody id="tabelDataTerakhir" class="text-gray-300 divide-y divide-neutral-800"></tbody>
+                        <tbody id="tabelDataSetoran" class="text-gray-300 divide-y divide-neutral-800">
+                            </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="passwordModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 px-4 hidden backdrop-blur-sm">
+        <div class="bg-[#1e1e1e] border border-orange-500 w-full max-w-xs rounded-2xl p-6 text-center space-y-4 shadow-2xl">
+            <h3 class="text-sm font-black text-orange-sifour uppercase tracking-wider">🔒 KEAMANAN DATA</h3>
+            <p class="text-xs text-gray-300">Masukkan PIN/Password untuk <br><b id="lblRiderPass" class="text-white"></b></p>
+            <input type="password" id="inputPassword" placeholder="Masukkan Password..." class="w-full bg-neutral-800 border border-neutral-600 text-white rounded-lg p-3 text-center tracking-widest font-bold focus:outline-none focus:border-orange-500">
+            <p id="errorPassword" class="text-[10px] text-red-500 font-bold hidden">❌ Password Salah! Coba lagi.</p>
+            <div class="grid grid-cols-2 gap-3 pt-2">
+                <button onclick="tutupPassword()" class="bg-neutral-700 text-white font-bold py-2.5 rounded-lg text-xs hover:bg-neutral-600 transition">Batal</button>
+                <button onclick="cekPassword()" class="bg-orange-sifour text-white font-bold py-2.5 rounded-lg text-xs hover:bg-orange-600 transition">Buka Akses</button>
             </div>
         </div>
     </div>
@@ -133,9 +154,23 @@
         // ==========================================================
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyodTYJJw8CLxBJeDIyEqi6YTzT9Muq7A4HJMclRoOCM1lZIBA66A2fhH71ClINRUIL/exec"; 
         
+        // ==========================================================
+        // DAFTAR PASSWORD SETIAP RIDER (SILAKAN DIUBAH SESUAI KEBUTUHAN)
+        // ==========================================================
+        const riderPasswords = {
+            "ACHMAD DARMADI": "1234",
+            "RICKY AKBAR": "1234",
+            "JUNAEDI": "1234",
+            "IRWAN SYAHPUTRA": "1234",
+            "RIJALDI JANUAR": "1234",
+            "RIZKY AKBAR ZAFIRA": "1234"
+        };
+        // ==========================================================
+
+        Chart.register(ChartDataLabels); // Aktivasi Label Nominal Grafik
         let database = { laporan: [], detail: [], hutang_list: [] };
-        let chartRiderObj = null;
-        let chartMenuObj = null;
+        let chartRiderObj = null; let chartMenuObj = null;
+        let tempTglMulai = null, tempTglAkhir = null, tempRider = null;
 
         window.onload = async () => {
             aturTanggalOtomatis();
@@ -144,23 +179,21 @@
                 database = await response.json();
                 document.getElementById('loading').style.display = 'none';
             } catch (err) {
-                document.getElementById('loading').innerText = "Gagal memuat data. Muat ulang halaman.";
+                document.getElementById('loading').innerText = "Gagal memuat data. Periksa koneksi atau URL Apps Script.";
             }
         };
 
-        document.getElementById('riderSelect').addEventListener('change', function() {
-            this.classList.remove('error-merah');
-            this.classList.add('terpilih-oren');
-        });
+        function ubahWarnaRider() {
+            const el = document.getElementById('riderSelect');
+            el.classList.remove('error-merah'); el.classList.add('terpilih-oren');
+        }
 
         function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); }
 
         function aturTanggalOtomatis() {
             const periode = document.getElementById('periodeSelect').value;
-            const tglMulai = document.getElementById('tglMulai');
-            const tglAkhir = document.getElementById('tglAkhir');
-            const hariIni = new Date();
-            let start = new Date(); let end = new Date();
+            const tglMulai = document.getElementById('tglMulai'); const tglAkhir = document.getElementById('tglAkhir');
+            const hariIni = new Date(); let start = new Date(); let end = new Date();
 
             if (periode === 'kemarin') { start.setDate(hariIni.getDate() - 1); end.setDate(hariIni.getDate() - 1); } 
             else if (periode === 'minggu_ini') { const day = hariIni.getDay(); const diff = hariIni.getDate() - day + (day == 0 ? -6 : 1); start = new Date(hariIni.setDate(diff)); end = new Date(); } 
@@ -173,31 +206,51 @@
 
         function formatDateDisplay(dateStr) { return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); }
 
-        function terapkanFilter() {
+        function mintaPassword() {
             const riderSelect = document.getElementById('riderSelect');
-            const namaRider = riderSelect.value;
+            tempRider = riderSelect.value;
             
-            if (!namaRider) {
+            if (!tempRider) {
                 riderSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 riderSelect.classList.remove('terpilih-oren');
                 riderSelect.classList.add('error-merah');
                 return;
             }
 
-            if(database.laporan.length === 0) return alert("Data masih dimuat, harap tunggu.");
+            if(database.laporan.length === 0) return alert("Data masih memuat dari server, harap tunggu.");
 
-            const tglMulaiStr = document.getElementById('tglMulai').value;
-            const tglAkhirStr = document.getElementById('tglAkhir').value;
-            const tMulai = new Date(tglMulaiStr).setHours(0,0,0,0);
-            const tAkhir = new Date(tglAkhirStr).setHours(23,59,59,999);
+            tempTglMulai = document.getElementById('tglMulai').value;
+            tempTglAkhir = document.getElementById('tglAkhir').value;
+
+            document.getElementById('lblRiderPass').innerText = tempRider;
+            document.getElementById('inputPassword').value = "";
+            document.getElementById('errorPassword').classList.add('hidden');
+            document.getElementById('passwordModal').classList.replace("hidden", "flex");
+        }
+
+        function tutupPassword() { document.getElementById('passwordModal').classList.replace("flex", "hidden"); }
+
+        function cekPassword() {
+            const inputPass = document.getElementById('inputPassword').value;
+            if (riderPasswords[tempRider] && inputPass === riderPasswords[tempRider]) {
+                tutupPassword();
+                eksekusiTerapkanFilter();
+            } else {
+                document.getElementById('errorPassword').classList.remove('hidden');
+            }
+        }
+
+        function eksekusiTerapkanFilter() {
+            const tMulai = new Date(tempTglMulai).setHours(0,0,0,0);
+            const tAkhir = new Date(tempTglAkhir).setHours(23,59,59,999);
 
             const labelPeriode = document.getElementById('periodeSelect').options[document.getElementById('periodeSelect').selectedIndex].text;
             const info = document.getElementById('teksInfoFilter');
-            info.innerHTML = `Menampilkan data <b>${labelPeriode}</b><br>(${formatDateDisplay(tglMulaiStr)} - ${formatDateDisplay(tglAkhirStr)})`;
+            info.innerHTML = `Menampilkan data <b>${labelPeriode} </b>(${formatDateDisplay(tempTglMulai)} - ${formatDateDisplay(tempTglAkhir)})`;
             info.classList.remove('hidden');
 
             document.getElementById('dashboardContent').classList.remove('hidden');
-            kalkulasiDashboard(namaRider, tMulai, tAkhir);
+            kalkulasiDashboard(tempRider, tMulai, tAkhir);
         }
 
         function kalkulasiDashboard(rider, tMulai, tAkhir) {
@@ -205,18 +258,14 @@
             const detailFiltered = database.detail.filter(d => { let dTime = new Date(d.tanggal).getTime(); return dTime >= tMulai && dTime <= tAkhir; });
 
             const laporanRider = laporanFiltered.filter(d => d.driver === rider);
-            let totalCup = 0; let totalKomisi = 0; let hariKerjaSet = new Set(); let sisaHutangTerakhir = 0;
-
+            let totalCup = 0; let totalKomisi = 0; let hariKerjaSet = new Set();
+            
             laporanRider.forEach(d => { totalCup += d.volume; totalKomisi += d.komisi; hariKerjaSet.add(d.tanggal); });
 
-            const semuaLaporanRider = database.laporan.filter(d => d.driver === rider);
-            if(semuaLaporanRider.length > 0) {
-                semuaLaporanRider.sort((a,b) => new Date(a.tanggal) - new Date(b.tanggal));
-                sisaHutangTerakhir = semuaLaporanRider[semuaLaporanRider.length - 1].sisa_hutang;
-            } else {
-                const hd = database.hutang_list.find(h => h.driver === rider);
-                if(hd) sisaHutangTerakhir = hd.nominal;
-            }
+            // HUTANG SECARA REALTIME DARI DATABASE_HUTANG
+            let hutangRealtime = 0;
+            const hd = database.hutang_list.find(h => h.driver === rider);
+            if(hd) hutangRealtime = hd.nominal;
 
             const totalBonus = hariKerjaSet.size * 24000;
             const komisiPlusBonus = totalKomisi + totalBonus;
@@ -224,7 +273,7 @@
             document.getElementById('valPenjualan').innerText = totalCup;
             document.getElementById('valKomisi').innerText = formatRupiah(totalKomisi);
             document.getElementById('valTotalBersih').innerText = formatRupiah(komisiPlusBonus);
-            document.getElementById('valHutang').innerText = formatRupiah(sisaHutangTerakhir);
+            document.getElementById('valHutang').innerText = formatRupiah(hutangRealtime);
 
             let targetTerdekat = 0; let targetPrev = 0; let statusTeks = ""; let gap = 0;
             if (totalCup < 900) { targetTerdekat = 900; gap = 900 - totalCup; statusTeks = "Belum mencapai target 900"; } 
@@ -232,26 +281,45 @@
             else if (totalCup >= 1200 && totalCup < 1500) { targetTerdekat = 1500; targetPrev = 1200; gap = 1500 - totalCup; statusTeks = `Mencapai target ${targetPrev} menuju ${targetTerdekat}`; } 
             else { gap = 0; statusTeks = "Target maksimal (>1500) tercapai!"; }
 
-            document.getElementById('valGapNominal').innerText = gap > 0 ? `${gap} Cup` : "0 Cup";
+            document.getElementById('valGapNominal').innerText = gap > 0 ? `Rp ${formatRupiah(gap).replace('Rp','').trim()}` : "Rp 0";
             document.getElementById('valStatusTarget').innerText = statusTeks;
 
+            // PERINGKAT EMOTICON
             let agregatSemuaRider = {};
             laporanFiltered.forEach(d => { if(!agregatSemuaRider[d.driver]) agregatSemuaRider[d.driver] = 0; agregatSemuaRider[d.driver] += d.volume; });
             let arrayPeringkat = Object.keys(agregatSemuaRider).map(nama => { return { nama: nama, cup: agregatSemuaRider[nama] }; });
             arrayPeringkat.sort((a, b) => b.cup - a.cup); 
+            
             let rankIndex = arrayPeringkat.findIndex(p => p.nama === rider);
-            document.getElementById('valPeringkat').innerText = rankIndex !== -1 ? `#${rankIndex + 1}` : "Tidak ada data";
+            let rankText = "Tidak ada data";
+            if(rankIndex === 0) rankText = "🏆 Top Sales";
+            else if(rankIndex === 1) rankText = "🥈 Runner Up Sales";
+            else if(rankIndex === 2) rankText = "🥉 3rd Sales";
+            else if(rankIndex === 3) rankText = "🎖 4th Sales";
+            else if(rankIndex === 4) rankText = "🎖 5th Sales";
+            else if(rankIndex === 5) rankText = "🎖 6th Sales";
 
+            document.getElementById('valPeringkat').innerText = rankText;
+
+            // CHART KESELURUHAN (DENGAN LABEL ANGKA)
             let labelsChart1 = arrayPeringkat.map(p => p.nama.split(' ')[0]);
             let dataChart1 = arrayPeringkat.map(p => p.cup);
 
             if(chartRiderObj) chartRiderObj.destroy();
             chartRiderObj = new Chart(document.getElementById('chartRider').getContext('2d'), {
                 type: 'bar',
-                data: { labels: labelsChart1, datasets: [{ label: 'Total Penjualan Cup', data: dataChart1, backgroundColor: arrayPeringkat.map(p => p.nama === rider ? '#f97316' : '#404040'), borderRadius: 4 }] },
-                options: { responsive: true, scales: { y: { min: 0, max: 2000, grid: {color: '#333'} }, x: { grid: {display: false} } }, plugins: { legend: {display: false} } }
+                data: { labels: labelsChart1, datasets: [{ data: dataChart1, backgroundColor: arrayPeringkat.map(p => p.nama === rider ? '#f97316' : '#404040'), borderRadius: 4 }] },
+                options: { 
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { min: 0, max: 2000, grid: {color: '#333'} }, x: { grid: {display: false} } }, 
+                    plugins: { 
+                        legend: {display: false},
+                        datalabels: { color: '#fff', anchor: 'end', align: 'bottom', font: { weight: 'bold', size: 9 }, formatter: Math.round }
+                    } 
+                }
             });
 
+            // CHART MENU
             let detailRider = detailFiltered.filter(d => d.driver === rider);
             let agregatMenu = {};
             detailRider.forEach(d => { if(!agregatMenu[d.produk]) agregatMenu[d.produk] = 0; agregatMenu[d.produk] += d.total_terjual; });
@@ -264,35 +332,56 @@
             if(chartMenuObj) chartMenuObj.destroy();
             chartMenuObj = new Chart(document.getElementById('chartMenu').getContext('2d'), {
                 type: 'bar',
-                data: { labels: labelsChart2, datasets: [{ label: 'Cup Terjual', data: dataChart2, backgroundColor: '#10b981', borderRadius: 4 }] },
-                options: { indexAxis: 'y', responsive: true, scales: { x: { grid: {color: '#333'} }, y: { grid: {display: false}, ticks: { font: {size: 10} } } }, plugins: { legend: {display: false} } }
+                data: { labels: labelsChart2, datasets: [{ data: dataChart2, backgroundColor: '#10b981', borderRadius: 4 }] },
+                options: { 
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    scales: { x: { grid: {color: '#333'} }, y: { grid: {display: false}, ticks: { font: {size: 9} } } }, 
+                    plugins: { 
+                        legend: {display: false},
+                        datalabels: { color: '#fff', anchor: 'end', align: 'left', font: { weight: 'bold', size: 9 }, formatter: Math.round }
+                    } 
+                }
             });
 
-            const semuaDetailRider = database.detail.filter(d => d.driver === rider);
-            const tbody = document.getElementById('tabelDataTerakhir');
+            // TABEL DATA SETORAN DENGAN PEMBATAS TANGGAL
+            const tbody = document.getElementById('tabelDataSetoran');
             tbody.innerHTML = '';
             
-            if(semuaDetailRider.length > 0) {
-                semuaDetailRider.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
-                const tglPalingAkhir = semuaDetailRider[0].tanggal;
-                document.getElementById('tglTerakhirSpan').innerText = `(${formatDateDisplay(tglPalingAkhir)})`;
+            if(detailRider.length > 0) {
+                // Urutkan Tanggal Descending
+                detailRider.sort((a,b) => new Date(b.tanggal) - new Date(a.tanggal));
+                let tanggalSekarang = "";
 
-                const dataTabel = semuaDetailRider.filter(d => d.tanggal === tglPalingAkhir);
-                dataTabel.forEach(d => {
+                detailRider.forEach(d => {
+                    // Buat pembatas setiap beda tanggal
+                    if (d.tanggal !== tanggalSekarang) {
+                        tbody.innerHTML += `
+                            <tr class="bg-neutral-800">
+                                <td colspan="7" class="p-1.5 text-center text-[10px] font-black text-orange-sifour border-y border-neutral-700 tracking-widest">
+                                    DATA TANGGAL: ${formatDateDisplay(d.tanggal)}
+                                </td>
+                            </tr>
+                        `;
+                        tanggalSekarang = d.tanggal;
+                    }
+                    
+                    // Filter agar data STOK AWAL BARU yang belum ada terjualnya tidak membingungkan
+                    if(d.status === "STOK_AWAL_BARU" && d.total_terjual === 0) return; // Skip baris stok murni di tampilan setoran
+
                     tbody.innerHTML += `
-                        <tr class="border-b border-neutral-800">
-                            <td class="p-2 truncate max-w-[100px]">${d.produk.replace('SI ','')}</td>
-                            <td class="p-2 text-center text-gray-400">${d.stok_awal}</td>
+                        <tr class="border-b border-neutral-800/50 hover:bg-neutral-800/30">
+                            <td class="p-2 truncate max-w-[90px] text-gray-200">${d.produk.replace('SI ','')}</td>
+                            <td class="p-2 text-center text-gray-500">${d.stok_awal}</td>
                             <td class="p-2 text-center text-blue-400">${d.bonus}</td>
+                            <td class="p-2 text-center text-gray-400">${d.sisa}</td>
                             <td class="p-2 text-center text-emerald-400">${d.terjual_tunai}</td>
                             <td class="p-2 text-center text-purple-400">${d.terjual_qris}</td>
-                            <td class="p-2 text-center font-bold text-orange-400">${d.sisa}</td>
+                            <td class="p-2 text-center font-black text-orange-500">${d.total_terjual}</td>
                         </tr>
                     `;
                 });
             } else {
-                document.getElementById('tglTerakhirSpan').innerText = "(Tidak Ada Data)";
-                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-gray-500">Tidak ada rekam jejak.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-gray-500 font-bold">Tidak ada setoran pada periode ini.</td></tr>';
             }
         }
     </script>
