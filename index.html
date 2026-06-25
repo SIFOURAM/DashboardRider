@@ -19,14 +19,14 @@
         @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+        .no-select { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
     </style>
 </head>
-<body class="pb-10" oncontextmenu="return false;">
+<body class="pb-10 no-select" oncontextmenu="return false;">
 
     <div class="bg-[#f97316] p-2 border-b border-neutral-800 sticky top-0 z-50 shadow-md">
         <h1 class="text-xl font-black text-center tracking-wider text-black-sifour mb-3">DASHBOARD SI FOUR AM</h1>
         <div class="relative max-w-lg mx-auto">
-            <span class="text-[10px] text-oren-400 font-bold uppercase tracking-wider mb-2 block"></span>
             <select id="riderSelect" onchange="ubahWarnaRider()" class="w-full bg-neutral-800 text-orange-sifour border border-neutral-600 rounded-lg p-1 appearance-none focus:outline-none transition-colors duration-300">
                 <option value="" disabled selected>-- Pilih Hak Akses --</option>
                 <option value="ADMIN" class="font-bold text-orange-400 bg-neutral-900">🛡️ ADMIN (SEMUA DATA RIDER)</option>
@@ -43,7 +43,7 @@
 
     <div class="p-1 space-y-1 max-w-lg mx-auto">
         <div class="card space-y-1">
-            <select id="periodeSelect" class="w-full bg-neutral-700 text-orange-sifour rounded p-1 text-xs border border-orange-500 focus:outline-none focus:border-orange-500" onchange="aturTanggalOtomatis()">
+            <select id="periodeSelect" class="w-full bg-neutral-700 text-orange-sifour rounded p-1 text-xs border border-orange-500 focus:outline-none" onchange="aturTanggalOtomatis()">
 		        <option value="" disabled selected>-- Pilih Periode --</option>
                 <option value="hari_ini">Hari Ini</option>
                 <option value="kemarin">Kemarin</option>
@@ -96,12 +96,10 @@
                 <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-3">Total Penjualan Rider</h3>
                 <div class="w-full h-48"><canvas id="chartRider"></canvas></div>
             </div>
-
             <div id="cardTrend" class="card hidden">
                 <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-3">Grafik Penjualan Harian</h3>
                 <div class="w-full h-48"><canvas id="chartTrendHarian"></canvas></div>
             </div>
-
             <div class="card">
                 <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-3">Produk Terlaris</h3>
                 <div class="w-full h-56"><canvas id="chartMenu"></canvas></div>
@@ -112,9 +110,7 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-[9px]">
                         <thead class="bg-neutral-800 text-white uppercase">
-                            <tr>
-                                <th class="p-2">Produk</th><th class="p-2 text-center">Awal</th><th class="p-2 text-center">Bns</th><th class="p-2 text-center">Sisa</th><th class="p-2 text-center">Tun</th><th class="p-2 text-center">QRIS</th><th class="p-2 text-center text-orange-400 font-bold">Tot</th>
-                            </tr>
+                            <tr><th class="p-2">Produk</th><th class="p-2 text-center">Awal</th><th class="p-2 text-center">Bns</th><th class="p-2 text-center">Sisa</th><th class="p-2 text-center">Tun</th><th class="p-2 text-center">QRIS</th><th class="p-2 text-center text-orange-400 font-bold">Tot</th></tr>
                         </thead>
                         <tbody id="tabelDataSetoran" class="text-gray-300 divide-y divide-neutral-800"></tbody>
                     </table>
@@ -127,35 +123,30 @@
         <div class="bg-[#1e1e1e] border border-orange-500 w-full max-w-xs rounded-2xl p-6 text-center space-y-4 shadow-2xl">
             <h3 class="text-sm font-black text-orange-sifour uppercase tracking-wider">🔒 KEAMANAN DATA</h3>
             <p class="text-xs text-gray-300">Masukkan PIN/Password untuk <br><b id="lblRiderPass" class="text-white"></b></p>
-            <input type="password" id="inputPassword" placeholder="Masukkan Password..." class="w-full bg-neutral-800 border border-neutral-600 text-white rounded-lg p-3 text-center tracking-widest font-bold focus:outline-none focus:border-orange-500">
+            <div class="relative">
+                <input type="password" id="inputPassword" placeholder="***" onkeydown="cekEnterKey(event)" class="w-full bg-neutral-800 border border-neutral-600 text-white rounded-lg p-3 text-center tracking-widest font-bold focus:outline-none focus:border-orange-500">
+                <button type="button" onclick="toggleMata()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 focus:outline-none">
+                    <svg id="mataTutup" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                    <svg id="mataBuka" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                </button>
+            </div>
             <p id="errorPassword" class="text-[10px] text-red-500 font-bold hidden">❌ Password Salah! Coba lagi.</p>
             <div class="grid grid-cols-2 gap-3 pt-2">
-                <button onclick="tutupPassword()" class="bg-neutral-700 text-white font-bold py-2.5 rounded-lg text-xs hover:bg-neutral-600 transition">Batal</button>
-                <button onclick="cekPassword()" class="bg-orange-sifour text-black-sifour font-bold py-2.5 rounded-lg text-xs hover:bg-orange-600 transition">Buka Akses</button>
+                <button onclick="tutupPassword()" class="bg-neutral-700 text-white font-bold py-2.5 rounded-lg text-xs">Batal</button>
+                <button onclick="cekPassword()" class="bg-orange-sifour text-black-sifour font-bold py-2.5 rounded-lg text-xs">Buka Akses</button>
             </div>
-	</div>
         </div>
     </div>
 
     <script>
         // ANTI INSPECT
         document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) || (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) || (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) || (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) { return false; } }
+        document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false; };
 
-        // ==========================================================
-        // WAJIB GANTI URL DI BAWAH DENGAN URL DEPLOYMENT APPS SCRIPT
-        // ==========================================================
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvn6AbP3JVDx0H6sHMk3o9xxNCsRZo3V12U8yeW-a_3F08ly92u6RGpBsO3lTPYk0N/exec"; 
+        // WAJIB GANTI URL DEPLOYMENT APPS SCRIPT DI SINI! (PASTIKAN TIDAK ADA ENTER DI DALAM TANDA KUTIP)
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqsR5yNImxtwAZv4089fVbgxY1fg__dYVEecWxv_V1tZG8aA4Q67x4Qjd87Q4443It/exec"; 
         
-        const riderPasswords = {
-            "ADMIN": "jkt221112",
-            "ACHMAD DARMADI": "0000",
-            "RICKY AKBAR": "1234",
-            "JUNAEDI": "1234",
-            "IRWAN SYAHPUTRA": "putra123",
-            "RIJALDI JANUAR": "4321",
-            "RIZKY AKBAR ZAFIRA": "1778"
-        };
+        const riderPasswords = { "ADMIN": "jkt221112", "ACHMAD DARMADI": "0000", "RICKY AKBAR": "1234", "JUNAEDI": "1234", "IRWAN SYAHPUTRA": "putra123", "RIJALDI JANUAR": "4321", "RIZKY AKBAR ZAFIRA": "1778" };
 
         Chart.register(ChartDataLabels); 
         let database = { laporan: [], detail: [], hutang_list: [] };
@@ -168,111 +159,60 @@
                 const response = await fetch(`${SCRIPT_URL}?action=getAllData`);
                 database = await response.json();
                 document.getElementById('loading').style.display = 'none';
-            } catch (err) {
-                document.getElementById('loading').innerText = "Gagal memuat data. Periksa koneksi atau URL Apps Script.";
-            }
+            } catch (err) { document.getElementById('loading').innerText = "Gagal memuat data. Periksa URL Apps Script."; }
         };
 
-
-        function ubahWarnaRider() {
-            const el = document.getElementById('riderSelect');
-            el.classList.remove('error-merah'); el.classList.add('terpilih-oren');
+        function toggleMata() {
+            const inp = document.getElementById('inputPassword');
+            const mb = document.getElementById('mataBuka'); const mt = document.getElementById('mataTutup');
+            if(inp.type === "password") { inp.type = "text"; mb.classList.remove('hidden'); mt.classList.add('hidden'); }
+            else { inp.type = "password"; mb.classList.add('hidden'); mt.classList.remove('hidden'); }
         }
 
+        function cekEnterKey(e) { if(e.key === "Enter" || e.keyCode === 13) { e.preventDefault(); cekPassword(); } }
+        function ubahWarnaRider() { const el = document.getElementById('riderSelect'); el.classList.remove('error-merah'); el.classList.add('terpilih-oren'); }
         function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); }
 
         function aturTanggalOtomatis() {
-            const periode = document.getElementById('periodeSelect').value;
-            const tglMulai = document.getElementById('tglMulai'); const tglAkhir = document.getElementById('tglAkhir');
+            const periode = document.getElementById('periodeSelect').value; const tglMulai = document.getElementById('tglMulai'); const tglAkhir = document.getElementById('tglAkhir');
             const hariIni = new Date(); let start = new Date(); let end = new Date();
-
-            if (periode === 'kemarin') { 
-                start.setDate(hariIni.getDate() - 1); end.setDate(hariIni.getDate() - 1); 
-            } 
-            else if (periode === 'minggu_ini') { 
-                const day = hariIni.getDay(); const diff = hariIni.getDate() - day + (day == 0 ? -6 : 1); start = new Date(hariIni.setDate(diff)); end = new Date(); 
-            } 
-            else if (periode === 'bulan_ini') { 
-                let y = hariIni.getFullYear(); let m = hariIni.getMonth();
-                if (hariIni.getDate() < 16) m -= 1; 
-                start = new Date(y, m, 16); end = new Date(y, m + 1, 15);
-            } 
-            else if (periode === 'bulan_kemarin') {
-                let y = hariIni.getFullYear(); let m = hariIni.getMonth();
-                if (hariIni.getDate() < 16) m -= 2; else m -= 1;
-                start = new Date(y, m, 16); end = new Date(y, m + 1, 15);
-            }
+            if (periode === 'kemarin') { start.setDate(hariIni.getDate() - 1); end.setDate(hariIni.getDate() - 1); } 
+            else if (periode === 'minggu_ini') { const day = hariIni.getDay(); const diff = hariIni.getDate() - day + (day == 0 ? -6 : 1); start = new Date(hariIni.setDate(diff)); end = new Date(); } 
+            else if (periode === 'bulan_ini') { let y = hariIni.getFullYear(); let m = hariIni.getMonth(); if (hariIni.getDate() < 16) m -= 1; start = new Date(y, m, 16); end = new Date(y, m + 1, 15); } 
+            else if (periode === 'bulan_kemarin') { let y = hariIni.getFullYear(); let m = hariIni.getMonth(); if (hariIni.getDate() < 16) m -= 2; else m -= 1; start = new Date(y, m, 16); end = new Date(y, m + 1, 15); }
             else if (periode === 'kustom' || !periode) return;
-
             const yearStart = start.getFullYear(); const monthStart = ("0" + (start.getMonth() + 1)).slice(-2); const dateStart = ("0" + start.getDate()).slice(-2);
             const yearEnd = end.getFullYear(); const monthEnd = ("0" + (end.getMonth() + 1)).slice(-2); const dateEnd = ("0" + end.getDate()).slice(-2);
-            
-            tglMulai.value = `${yearStart}-${monthStart}-${dateStart}`;
-            tglAkhir.value = `${yearEnd}-${monthEnd}-${dateEnd}`;
+            tglMulai.value = `${yearStart}-${monthStart}-${dateStart}`; tglAkhir.value = `${yearEnd}-${monthEnd}-${dateEnd}`;
         }
 
-
         function formatDateDisplay(dateStr) { return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); }
+        function cekAksesHarian(rider) { const todayStr = new Date().toLocaleDateString(); return localStorage.getItem(`auth_sifour_${rider.replace(/\s/g,'_')}`) === todayStr; }
+        function simpanAksesHarian(rider) { localStorage.setItem(`auth_sifour_${rider.replace(/\s/g,'_')}`, new Date().toLocaleDateString()); }
 
         function mintaPassword() {
-            const riderSelect = document.getElementById('riderSelect');
-            tempRider = riderSelect.value;
-            
-            if (!tempRider) {
-                riderSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                riderSelect.classList.remove('terpilih-oren');
-                riderSelect.classList.add('error-merah');
-                return;
-            }
-
+            tempRider = document.getElementById('riderSelect').value;
+            if (!tempRider) { const rs = document.getElementById('riderSelect'); rs.scrollIntoView({ behavior: 'smooth', block: 'center' }); rs.classList.remove('terpilih-oren'); rs.classList.add('error-merah'); return; }
             if(database.laporan.length === 0) return alert("Data masih memuat dari server, harap tunggu.");
-
-            tempTglMulai = document.getElementById('tglMulai').value;
-            tempTglAkhir = document.getElementById('tglAkhir').value;
-
-            // SISTEM 1X LOGIN PER HARI
-            const tglHariIni = new Date().toISOString().split('T')[0];
-            if (localStorage.getItem('auth_sifour_' + tempRider) === tglHariIni) {
-                eksekusiTerapkanFilter();
-                return;
-            }
-
-            document.getElementById('lblRiderPass').innerText = tempRider;
-            document.getElementById('inputPassword').value = "";
-            document.getElementById('errorPassword').classList.add('hidden');
-            document.getElementById('passwordModal').classList.replace("hidden", "flex");
+            tempTglMulai = document.getElementById('tglMulai').value; tempTglAkhir = document.getElementById('tglAkhir').value;
+            if (cekAksesHarian(tempRider)) { eksekusiTerapkanFilter(); return; }
+            document.getElementById('lblRiderPass').innerText = tempRider; document.getElementById('inputPassword').value = ""; document.getElementById('errorPassword').classList.add('hidden'); document.getElementById('passwordModal').classList.replace("hidden", "flex");
         }
 
         function tutupPassword() { document.getElementById('passwordModal').classList.replace("flex", "hidden"); }
 
         function cekPassword() {
             const inputPass = document.getElementById('inputPassword').value;
-            const mataBuka = document.getElementById('iconMataTerbuka');
-            const mataTutup = document.getElementById('iconMataTertutup');
             if (riderPasswords[tempRider] && inputPass === riderPasswords[tempRider]) {
-                const tglHariIni = new Date().toISOString().split('T')[0];
-                localStorage.setItem('auth_sifour_' + tempRider, tglHariIni);
-                tutupPassword();
-                eksekusiTerapkanFilter();
-                inputPass.type = "text";
-                mataBuka.classList.remove('hidden');
-                mataTutup.classList.add('hidden');
-            } else {
-                document.getElementById('errorPassword').classList.remove('hidden');
-	        mataBuka.classList.add('hidden');
-	        mataTutup.classList.remove('hidden');
-            }
+                simpanAksesHarian(tempRider); tutupPassword(); eksekusiTerapkanFilter();
+            } else document.getElementById('errorPassword').classList.remove('hidden');
         }
 
         function eksekusiTerapkanFilter() {
-            const tMulai = new Date(tempTglMulai).setHours(0,0,0,0);
-            const tAkhir = new Date(tempTglAkhir).setHours(23,59,59,999);
-
+            const tMulai = new Date(tempTglMulai).setHours(0,0,0,0); const tAkhir = new Date(tempTglAkhir).setHours(23,59,59,999);
             const labelPeriode = document.getElementById('periodeSelect').options[document.getElementById('periodeSelect').selectedIndex].text;
-            const info = document.getElementById('teksInfoFilter');
-            info.innerHTML = `Menampilkan data <b>${labelPeriode} </b>(${formatDateDisplay(tempTglMulai)} - ${formatDateDisplay(tempTglAkhir)})`;
-            info.classList.remove('hidden');
-
+            document.getElementById('teksInfoFilter').innerHTML = `Menampilkan data <b>${labelPeriode} </b>(${formatDateDisplay(tempTglMulai)} - ${formatDateDisplay(tempTglAkhir)})`;
+            document.getElementById('teksInfoFilter').classList.remove('hidden');
             document.getElementById('dashboardContent').classList.remove('hidden');
             kalkulasiDashboard(tempRider, tMulai, tAkhir);
         }
@@ -286,7 +226,6 @@
             const detailTerpilih = isAdmin ? detailFiltered : detailFiltered.filter(d => d.driver === rider);
 
             let totalCup = 0; let totalKomisi = 0; 
-            
             laporanTerpilih.forEach(d => { totalCup += d.volume; totalKomisi += d.komisi; });
 
             let hutangRealtime = 0;
@@ -296,173 +235,74 @@
             let totalBonus = 0;
             if(isAdmin) {
                 let ridersSet = new Set(laporanTerpilih.map(d => d.driver));
-                ridersSet.forEach(r => {
-                    let hariKerjaSet = new Set();
-                    laporanTerpilih.filter(d => d.driver === r).forEach(d => hariKerjaSet.add(d.tanggal));
-                    totalBonus += hariKerjaSet.size * 24000;
-                });
+                ridersSet.forEach(r => { let hariKerjaSet = new Set(); laporanTerpilih.filter(d => d.driver === r).forEach(d => hariKerjaSet.add(d.tanggal)); totalBonus += hariKerjaSet.size * 24000; });
             } else {
-                let hariKerjaSet = new Set();
-                laporanTerpilih.forEach(d => hariKerjaSet.add(d.tanggal));
-                totalBonus = hariKerjaSet.size * 24000;
+                let hariKerjaSet = new Set(); laporanTerpilih.forEach(d => hariKerjaSet.add(d.tanggal)); totalBonus = hariKerjaSet.size * 24000;
             }
-            const komisiPlusBonus = totalKomisi + totalBonus;
 
-            document.getElementById('valPenjualan').innerText = `${totalCup} Cup`;
-            document.getElementById('valKomisi').innerText = formatRupiah(totalKomisi);
-            document.getElementById('valTotalBersih').innerText = formatRupiah(komisiPlusBonus);
-            document.getElementById('valHutang').innerText = formatRupiah(hutangRealtime);
+            document.getElementById('valPenjualan').innerText = `${totalCup} Cup`; document.getElementById('valKomisi').innerText = formatRupiah(totalKomisi); document.getElementById('valTotalBersih').innerText = formatRupiah(totalKomisi + totalBonus); document.getElementById('valHutang').innerText = formatRupiah(hutangRealtime);
 
-            const multiplierTarget = isAdmin ? 6 : 1; 
-            let targetTerdekat = 0; let statusTeks = ""; let gap = 0;
-
-            if (totalCup < (900 * multiplierTarget)) { 
-                targetTerdekat = 900 * multiplierTarget; gap = targetTerdekat - totalCup; 
-                statusTeks = `Belum mencapai target ${targetTerdekat}`; 
-            } 
-            else if (totalCup >= (900 * multiplierTarget) && totalCup < (1200 * multiplierTarget)) { 
-                targetTerdekat = 1200 * multiplierTarget; gap = targetTerdekat - totalCup; 
-                statusTeks = `Mencapai target ${900 * multiplierTarget} menuju ${targetTerdekat}`; 
-            } 
-            else if (totalCup >= (1200 * multiplierTarget) && totalCup < (1500 * multiplierTarget)) { 
-                targetTerdekat = 1500 * multiplierTarget; gap = targetTerdekat - totalCup; 
-                statusTeks = `Mencapai target ${1200 * multiplierTarget} menuju ${targetTerdekat}`; 
-            } 
+            const multiplierTarget = isAdmin ? 6 : 1; let targetTerdekat = 0; let statusTeks = ""; let gap = 0;
+            if (totalCup < (900 * multiplierTarget)) { targetTerdekat = 900 * multiplierTarget; gap = targetTerdekat - totalCup; statusTeks = `Belum mencapai target ${targetTerdekat}`; } 
+            else if (totalCup >= (900 * multiplierTarget) && totalCup < (1200 * multiplierTarget)) { targetTerdekat = 1200 * multiplierTarget; gap = targetTerdekat - totalCup; statusTeks = `Mencapai target ${900 * multiplierTarget} menuju ${targetTerdekat}`; } 
+            else if (totalCup >= (1200 * multiplierTarget) && totalCup < (1500 * multiplierTarget)) { targetTerdekat = 1500 * multiplierTarget; gap = targetTerdekat - totalCup; statusTeks = `Mencapai target ${1200 * multiplierTarget} menuju ${targetTerdekat}`; } 
             else { gap = 0; statusTeks = `Target maksimal (>${1500 * multiplierTarget}) tercapai!`; }
 
             document.getElementById('valGapNominal').innerText = gap > 0 ? `(-) ${gap} Cup` : "(-) 0 Cup";
             document.getElementById('valStatusTarget').innerText = statusTeks;
 
-            let agregatSemuaRider = {};
-            laporanFiltered.forEach(d => { if(!agregatSemuaRider[d.driver]) agregatSemuaRider[d.driver] = 0; agregatSemuaRider[d.driver] += d.volume; });
-            let arrayPeringkat = Object.keys(agregatSemuaRider).map(nama => { return { nama: nama, cup: agregatSemuaRider[nama] }; });
+            let agregatSemuaRider = {}; laporanFiltered.forEach(d => { if(!agregatSemuaRider[d.driver]) agregatSemuaRider[d.driver] = 0; agregatSemuaRider[d.driver] += d.volume; });
+            let arrayPeringkat = Object.keys(agregatSemuaRider).map(nama => ({ nama: nama, cup: agregatSemuaRider[nama] }));
             arrayPeringkat.sort((a, b) => b.cup - a.cup); 
             
             let rankText = "ADMIN VIEW";
             if (!isAdmin) {
                 let rankIndex = arrayPeringkat.findIndex(p => p.nama === rider);
                 if(rankIndex === -1) rankText = "Tidak ada data";
-                else if(rankIndex === 0) rankText = "🏆 Top Sales";
-                else if(rankIndex === 1) rankText = "🥈 Runner Up Sales";
-                else if(rankIndex === 2) rankText = "🥉 3rd Sales";
-                else if(rankIndex === 3) rankText = "🎖 4th Sales";
-                else if(rankIndex === 4) rankText = "🎖 5th Sales";
-                else if(rankIndex === 5) rankText = "🎖 6th Sales";
+                else if(rankIndex === 0) rankText = "🏆 Top Sales"; else if(rankIndex === 1) rankText = "🥈 Runner Up Sales"; else if(rankIndex === 2) rankText = "🥉 3rd Sales"; else if(rankIndex === 3) rankText = "🎖 4th Sales"; else if(rankIndex === 4) rankText = "🎖 5th Sales"; else if(rankIndex === 5) rankText = "🎖 6th Sales";
             }
             document.getElementById('valPeringkat').innerText = rankText;
 
-            let labelsChart1 = arrayPeringkat.map(p => p.nama.split(' ')[0]);
-            let dataChart1 = arrayPeringkat.map(p => p.cup);
-            let maxGraph1Value = dataChart1.length > 0 ? Math.max(...dataChart1) : 100;
-            let maxYAxis1 = Math.ceil(maxGraph1Value * 1.15);
-
+            let labelsChart1 = arrayPeringkat.map(p => p.nama.split(' ')[0]); let dataChart1 = arrayPeringkat.map(p => p.cup);
             if(chartRiderObj) chartRiderObj.destroy();
             chartRiderObj = new Chart(document.getElementById('chartRider').getContext('2d'), {
-                type: 'bar',
-                data: { labels: labelsChart1, datasets: [{ data: dataChart1, backgroundColor: arrayPeringkat.map(p => (isAdmin || p.nama === rider) ? '#f97316' : '#404040'), borderRadius: 4 }] },
-                options: { 
-                    responsive: true, maintainAspectRatio: false,
-                    scales: { y: { min: 0, max: maxYAxis1, grid: {color: '#333'} }, x: { grid: {display: false} } }, 
-                    plugins: { 
-                        legend: {display: false},
-                        datalabels: { color: '#fff', anchor: 'end', align: 'bottom', font: { weight: 'bold', size: 9 }, formatter: Math.round }
-                    } 
-                }
+                type: 'bar', data: { labels: labelsChart1, datasets: [{ data: dataChart1, backgroundColor: arrayPeringkat.map(p => (isAdmin || p.nama === rider) ? '#f97316' : '#404040'), borderRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: Math.ceil((Math.max(...dataChart1)||100) * 1.15), grid: {color: '#333'} }, x: { grid: {display: false} } }, plugins: { legend: {display: false}, datalabels: { color: '#fff', anchor: 'end', align: 'bottom', font: { weight: 'bold', size: 9 }, formatter: Math.round } } }
             });
 
-            const periodeDipilih = document.getElementById('periodeSelect').value;
-            const elTrend = document.getElementById('cardTrend');
-            
+            const periodeDipilih = document.getElementById('periodeSelect').value; const elTrend = document.getElementById('cardTrend');
             if (isAdmin || ['minggu_ini', 'bulan_ini', 'bulan_kemarin'].includes(periodeDipilih)) {
-                elTrend.classList.remove('hidden');
-                let agregatHarian = {};
-                laporanTerpilih.forEach(d => {
-                    const tglPdk = d.tanggal.substring(5);
-                    if(!agregatHarian[tglPdk]) agregatHarian[tglPdk] = 0;
-                    agregatHarian[tglPdk] += d.volume;
-                });
-                let sortedTgl = Object.keys(agregatHarian).sort();
-                let dataTrend = sortedTgl.map(t => agregatHarian[t]);
-                let maxGraphTrend = dataTrend.length > 0 ? Math.max(...dataTrend) : 100;
-                let maxYAxisTrend = Math.ceil(maxGraphTrend * 1.15);
-
+                elTrend.classList.remove('hidden'); let agregatHarian = {};
+                laporanTerpilih.forEach(d => { const tglPdk = d.tanggal.substring(5); if(!agregatHarian[tglPdk]) agregatHarian[tglPdk] = 0; agregatHarian[tglPdk] += d.volume; });
+                let sortedTgl = Object.keys(agregatHarian).sort(); let dataTrend = sortedTgl.map(t => agregatHarian[t]);
                 if(chartTrendObj) chartTrendObj.destroy();
                 chartTrendObj = new Chart(document.getElementById('chartTrendHarian').getContext('2d'), {
-                    type: 'line',
-                    data: { labels: sortedTgl, datasets: [{ label: 'Cup Harian', data: dataTrend, borderColor: '#f97316', backgroundColor: 'rgba(249, 115, 22, 0.1)', fill: true, tension: 0.3, pointBackgroundColor: '#fff' }] },
-                    options: { 
-                        responsive: true, maintainAspectRatio: false,
-                        scales: { y: { min: 0, max: maxYAxisTrend, grid: {color: '#333'} }, x: { grid: {color: '#222'} } }, 
-                        plugins: { legend: {display: false}, datalabels: { display: false } }
-                    }
+                    type: 'line', data: { labels: sortedTgl, datasets: [{ label: 'Cup Harian', data: dataTrend, borderColor: '#f97316', backgroundColor: 'rgba(249, 115, 22, 0.1)', fill: true, tension: 0.3, pointBackgroundColor: '#fff' }] },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: Math.ceil((Math.max(...dataTrend)||100) * 1.15), grid: {color: '#333'} }, x: { grid: {color: '#222'} } }, plugins: { legend: {display: false}, datalabels: { display: false } } }
                 });
             } else elTrend.classList.add('hidden');
 
-            let agregatMenu = {};
-            detailTerpilih.forEach(d => { if(!agregatMenu[d.produk]) agregatMenu[d.produk] = 0; agregatMenu[d.produk] += d.total_terjual; });
-            let arrayMenu = Object.keys(agregatMenu).map(nama => { return { menu: nama, cup: agregatMenu[nama] }});
-            arrayMenu.sort((a,b) => b.cup - a.cup);
-
-            let labelsChart2 = arrayMenu.map(p => p.menu.replace('SI ', ''));
-            let dataChart2 = arrayMenu.map(p => p.cup);
-
+            let agregatMenu = {}; detailTerpilih.forEach(d => { if(!agregatMenu[d.produk]) agregatMenu[d.produk] = 0; agregatMenu[d.produk] += d.total_terjual; });
+            let arrayMenu = Object.keys(agregatMenu).map(nama => ({ menu: nama, cup: agregatMenu[nama] })); arrayMenu.sort((a,b) => b.cup - a.cup);
             if(chartMenuObj) chartMenuObj.destroy();
             chartMenuObj = new Chart(document.getElementById('chartMenu').getContext('2d'), {
-                type: 'bar',
-                data: { labels: labelsChart2, datasets: [{ data: dataChart2, backgroundColor: '#10b981', borderRadius: 4 }] },
-                options: { 
-                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    scales: { x: { beginAtZero: true, grid: {color: '#333'} }, y: { grid: {display: false}, ticks: { font: {size: 9} } } }, 
-                    plugins: { 
-                        legend: {display: false},
-                        datalabels: { color: '#fff', anchor: 'end', align: 'left', font: { weight: 'bold', size: 9 }, formatter: Math.round }
-                    } 
-                }
+                type: 'bar', data: { labels: arrayMenu.map(p => p.menu.replace('SI ', '')), datasets: [{ data: arrayMenu.map(p => p.cup), backgroundColor: '#10b981', borderRadius: 4 }] },
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true, grid: {color: '#333'} }, y: { grid: {display: false}, ticks: { font: {size: 9} } } }, plugins: { legend: {display: false}, datalabels: { color: '#fff', anchor: 'end', align: 'left', font: { weight: 'bold', size: 9 }, formatter: Math.round } } }
             });
 
-            const tbody = document.getElementById('tabelDataSetoran');
-            tbody.innerHTML = '';
-            
+            const tbody = document.getElementById('tabelDataSetoran'); tbody.innerHTML = '';
             if(detailTerpilih.length > 0) {
-                detailTerpilih.sort((a,b) => {
-                    let dateDiff = new Date(b.tanggal) - new Date(a.tanggal);
-                    if (dateDiff !== 0) return dateDiff;
-                    return a.driver.localeCompare(b.driver);
-                });
-                let tanggalSekarang = ""; let driverSekarang = "";
-
+                detailTerpilih.sort((a,b) => { let diff = new Date(b.tanggal) - new Date(a.tanggal); return diff !== 0 ? diff : a.driver.localeCompare(b.driver); });
+                let tglSkrg = ""; let drvSkrg = "";
                 detailTerpilih.forEach(d => {
                     if(d.status === "STOK_AWAL_BARU" && d.total_terjual === 0) return; 
-
-                    if (d.tanggal !== tanggalSekarang || (isAdmin && d.driver !== driverSekarang)) {
-                        let headerTeks = isAdmin ? `TANGGAL: ${formatDateDisplay(d.tanggal)} - ${d.driver.split(' ')[0]}` : `DATA TANGGAL: ${formatDateDisplay(d.tanggal)}`;
-                        tbody.innerHTML += `
-                            <tr class="bg-neutral-800">
-                                <td colspan="7" class="p-1.5 text-center text-[10px] font-black text-orange-sifour border-y border-neutral-700 tracking-widest">
-                                    ${headerTeks}
-                                </td>
-                            </tr>
-                        `;
-                        tanggalSekarang = d.tanggal; driverSekarang = d.driver;
+                    if (d.tanggal !== tglSkrg || (isAdmin && d.driver !== drvSkrg)) {
+                        tbody.innerHTML += `<tr class="bg-neutral-800"><td colspan="7" class="p-1.5 text-center text-[10px] font-black text-orange-sifour border-y border-neutral-700 tracking-widest">${isAdmin ? `TANGGAL: ${formatDateDisplay(d.tanggal)} - ${d.driver.split(' ')[0]}` : `DATA TANGGAL: ${formatDateDisplay(d.tanggal)}`}</td></tr>`;
+                        tglSkrg = d.tanggal; drvSkrg = d.driver;
                     }
-                    
-                    let labelProduk = isAdmin ? `<span class="text-orange-400 font-bold">${d.driver.split(' ')[0]}</span> - ` + d.produk.replace('SI ','') : d.produk.replace('SI ','');
-
-                    tbody.innerHTML += `
-                        <tr class="border-b border-neutral-800/50 hover:bg-neutral-800/30">
-                            <td class="p-2 truncate max-w-[110px] text-gray-200">${labelProduk}</td>
-                            <td class="p-2 text-center text-gray-500">${d.stok_awal}</td>
-                            <td class="p-2 text-center text-blue-400">${d.bonus}</td>
-                            <td class="p-2 text-center text-gray-400">${d.sisa}</td>
-                            <td class="p-2 text-center text-emerald-400">${d.terjual_tunai}</td>
-                            <td class="p-2 text-center text-purple-400">${d.terjual_qris}</td>
-                            <td class="p-2 text-center font-black text-orange-500">${d.total_terjual}</td>
-                        </tr>
-                    `;
+                    tbody.innerHTML += `<tr class="border-b border-neutral-800/50 hover:bg-neutral-800/30"><td class="p-2 truncate max-w-[110px] text-gray-200">${isAdmin ? `<span class="text-orange-400 font-bold">${d.driver.split(' ')[0]}</span> - ` + d.produk.replace('SI ','') : d.produk.replace('SI ','')}</td><td class="p-2 text-center text-gray-500">${d.stok_awal}</td><td class="p-2 text-center text-blue-400">${d.bonus}</td><td class="p-2 text-center text-gray-400">${d.sisa}</td><td class="p-2 text-center text-emerald-400">${d.terjual_tunai}</td><td class="p-2 text-center text-purple-400">${d.terjual_qris}</td><td class="p-2 text-center font-black text-orange-500">${d.total_terjual}</td></tr>`;
                 });
-            } else {
-                tbody.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-gray-500 font-bold">Tidak ada setoran pada periode ini.</td></tr>';
-            }
+            } else tbody.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-gray-500 font-bold">Tidak ada setoran.</td></tr>';
         }
     </script>
 </body>
