@@ -11,39 +11,27 @@
     <style>
         body { background-color: #111111; color: #ffffff; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
         
-        /* Tema Gradient Gold yang konsisten untuk semua border */
-        .card { 
-            background-color: #1e1e1e; 
-            border-radius: 0.5rem; 
-            padding: 0.75rem 1rem; 
-            background-clip: padding-box;
-            border: 2px solid transparent;
-            background-image: linear-gradient(#1e1e1e, #1e1e1e), linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            background-origin: border-box;
-        }
-        
+        /* Tema Gradient Gold Premium untuk Border */
         .border-gradient-gold {
-            background-clip: padding-box;
+            background: linear-gradient(#1e1e1e, #1e1e1e) padding-box, linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) border-box;
             border: 2px solid transparent;
-            background-image: linear-gradient(#111111, #111111), linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            background-origin: border-box;
+        }
+        .border-gradient-gold-thin {
+            background: linear-gradient(#111111, #111111) padding-box, linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) border-box;
+            border: 1px solid transparent;
+        }
+        .border-gradient-gold-table {
+            border-bottom: 2px solid #bf953f;
         }
 
-        .border-gradient-gold-bottom {
-            border-bottom: 2px solid transparent;
-            border-image: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) 1;
-        }
-
-        .text-black-sifour { color: #111111; } 
-        .text-orange-sifour { color: #f97316; } 
+        .card { background-color: #1e1e1e; border-radius: 0.5rem; padding: 0.75rem 1rem; }
+        .text-black-sifour { color: #111111; } .text-orange-sifour { color: #f97316; } .text-red-sifour { color: #FF0000; }
         .bg-orange-sifour { background-color: #f97316; }
+        .terpilih-oren { color: #f97316 !important; font-weight: bold;}
+        .error-merah { background: linear-gradient(#1e1e1e, #1e1e1e) padding-box, linear-gradient(to right, #ef4444, #b91c1c) border-box; border: 2px solid transparent; animation: shake 0.5s;}
         
-        .terpilih-oren { background-color: #111111; color: #f97316; border-color: #f97316 !important; font-weight: bold;}
-        .error-merah { background-color: #fee2e2; color: #b91c1c; border-color: #ef4444 !important; animation: shake 0.5s;}
         @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
-        
-        ::-webkit-scrollbar { width: 4px; height: 4px; } 
-        ::-webkit-scrollbar-thumb { background: #bf953f; border-radius: 4px; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; } ::-webkit-scrollbar-thumb { background: #bf953f; border-radius: 4px; }
         .no-select { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
         
         #headerRider { transition: top 0.3s ease-in-out; }
@@ -52,10 +40,10 @@
 </head>
 <body class="pb-10 no-select" oncontextmenu="return false;">
 
-    <div id="headerRider" class="bg-[#f97316] p-2 border-gradient-gold-bottom sticky top-0 z-50 shadow-md">
+    <div id="headerRider" class="bg-[#f97316] p-2 border-b-2 border-orange-800 sticky top-0 z-50 shadow-md">
         <h1 class="text-xl font-black text-center tracking-wider text-black-sifour mb-3">DASHBOARD SI FOUR AM</h1>
         <div id="riderSelectContainer" class="relative max-w-lg mx-auto transition-opacity duration-300">
-            <select id="riderSelect" onchange="ubahWarnaRider()" class="w-full border-gradient-gold text-orange-sifour rounded-lg p-2 text-sm appearance-none focus:outline-none transition-colors duration-300">
+            <select id="riderSelect" onchange="ubahWarnaRider()" class="w-full bg-[#1e1e1e] text-orange-sifour rounded-lg p-2 text-sm appearance-none focus:outline-none transition-colors duration-300 border-gradient-gold">
                 <option value="" disabled selected>-- Pilih Hak Akses --</option>
                 <option value="ADMIN" class="font-bold text-orange-400 bg-black">🛡️ ADMIN (SEMUA DATA RIDER)</option>
                 <option value="ACHMAD DARMADI" class="font-bold text-orange-400 bg-black">ADI</option>
@@ -70,106 +58,111 @@
     </div>
 
     <div class="p-2 space-y-2 max-w-lg mx-auto" id="mainContainer">
-        <div class="card space-y-2" id="filterPeriode">
-            <select id="periodeSelect" class="w-full border-gradient-gold text-orange-sifour rounded p-2 text-xs focus:outline-none" onchange="aturTanggalOtomatis()">
+        <div class="card border-gradient-gold space-y-2" id="filterPeriode">
+            <select id="periodeSelect" class="w-full bg-[#111111] text-orange-sifour rounded p-2 text-xs focus:outline-none border-gradient-gold-thin" onchange="aturTanggalOtomatis()">
 		        <option value="" disabled selected>-- Pilih Periode --</option>
-                <option value="hari_ini">Hari Ini</option><option value="kemarin">Kemarin</option><option value="minggu_ini">Minggu Ini</option><option value="bulan_ini">Bulan Ini (16 - 15)</option><option value="bulan_kemarin">Bulan Kemarin (16 - 15)</option><option value="kustom">Pilih Kustom</option>
+                <option value="hari_ini">Hari Ini</option>
+                <option value="kemarin">Kemarin</option>
+                <option value="minggu_ini">Minggu Ini</option>
+                <option value="bulan_ini">Bulan Ini (Siklus 16-15)</option>
+                <option value="bulan_kemarin">Bulan Kemarin (Siklus 16-15)</option>
+                <option value="kustom">Pilih Kustom</option>
             </select>
             <div class="grid grid-cols-2 gap-2">
-                <div><input type="date" id="tglMulai" class="w-full border-gradient-gold text-orange-sifour rounded p-2 text-xs"></div>
-                <div><input type="date" id="tglAkhir" class="w-full border-gradient-gold text-orange-sifour rounded p-2 text-xs"></div>
+                <div><input type="date" id="tglMulai" class="w-full bg-[#111111] text-orange-sifour rounded p-2 text-xs focus:outline-none border-gradient-gold-thin"></div>
+                <div><input type="date" id="tglAkhir" class="w-full bg-[#111111] text-orange-sifour rounded p-2 text-xs focus:outline-none border-gradient-gold-thin"></div>
             </div>
-            <button onclick="mintaPassword()" class="w-full bg-gradient-to-r from-[#bf953f] to-[#fbf5b7] text-black-sifour font-black py-2 rounded-lg text-sm transition mt-2 shadow-lg tracking-wider">TAMPILKAN</button>
+            <button onclick="mintaPassword()" class="w-full bg-gradient-to-r from-[#bf953f] to-[#fbf5b7] text-[#111111] font-black py-2 rounded-lg text-sm hover:opacity-90 transition mt-2 shadow-lg tracking-wider">TAMPILKAN</button>
             <div id="teksInfoFilter" class="text-center text-[10px] text-orange-sifour font-medium hidden pt-1"></div>
         </div>
 
         <div id="loading" class="text-center text-xs text-orange-sifour py-10 font-bold animate-pulse">Memuat Data Database...</div>
 
         <div id="dashboardContent" class="hidden space-y-2">
-            <div class="card flex flex-col items-center justify-center text-center space-y-0.5">
+            <div class="card border-gradient-gold flex flex-col items-center justify-center text-center space-y-0.5">
                 <p class="text-[10px] text-white uppercase tracking-widest font-bold">Total Penjualan Cup</p>
                 <h2 id="valPenjualan" class="text-3xl font-black text-orange-sifour">0 Cup</h2>
             </div>
-            <div class="card flex flex-col items-center justify-center text-center space-y-0.1">
+            <div class="card border-gradient-gold flex flex-col items-center justify-center text-center space-y-0.1">
                 <p class="text-[10px] text-orange-sifour uppercase tracking-widest font-bold">Total Komisi Rider</p>
                 <h2 id="valKomisi" class="text-2xl font-bold text-white">Rp 0</h2>
             </div>
-            <div class="card flex flex-col items-center justify-center text-center space-y-0.1">
+            <div class="card border-gradient-gold flex flex-col items-center justify-center text-center space-y-0.1 bg-gradient-to-br from-[#1e1e1e] to-orange-900/20">
                 <p class="text-[10px] text-white uppercase tracking-widest font-bold">Total Komisi + Bonus</p>
                 <h2 id="valTotalBersih" class="text-3xl font-black text-orange-sifour">Rp 0</h2>
             </div>
-            <div class="card flex flex-col items-center justify-center text-center space-y-0.1">
+            <div class="card border-gradient-gold flex flex-col items-center justify-center text-center space-y-0.1">
                 <p class="text-[10px] text-white uppercase tracking-widest font-bold">Peringkat Rider</p>
                 <h2 id="valPeringkat" class="text-xl font-black text-[#FFD700] mt-1">-</h2>
             </div>
 
             <div class="grid grid-cols-2 gap-2">
-                <div class="card flex flex-col justify-between py-3">
+                <div class="card border-gradient-gold flex flex-col justify-between py-3">
                     <p class="text-[9px] text-center text-white uppercase tracking-wider mb-1 font-bold">Target Penjualan</p>
                     <h3 id="valGapNominal" class="text-lg font-bold text-center text-orange-sifour">(-) 0 Cup</h3>
                     <p id="valStatusTarget" class="text-[9px] text-center text-red-sifour mt-1 leading-tight">Belum mencapai target</p>
                 </div>
-                <div class="card flex flex-col justify-between py-3">
+                <div class="card border-gradient-gold flex flex-col justify-between py-3">
                     <p class="text-[9px] text-white uppercase tracking-wider mb-1 text-center font-bold">Sisa Hutang Rider</p>
                     <h3 id="valHutang" class="text-lg font-black text-red-sifour text-center">Rp 0</h3>
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-2">
-                <div class="card flex flex-col justify-between py-3">
+                <div class="card border-gradient-gold flex flex-col justify-between py-3">
                     <p class="text-[9px] text-center text-white uppercase tracking-wider mb-1 font-bold">Masa Dagang</p>
                     <h3 id="valMasaDagang" class="text-lg font-bold text-center text-orange-sifour">0/25 Hari</h3>
                     <p id="valStatusMasaDagang" class="text-[9px] text-center text-orange-400 mt-1 leading-tight">-</p>
                 </div>
-                <div class="card flex flex-col justify-between py-3">
+                <div class="card border-gradient-gold flex flex-col justify-between py-3">
                     <p class="text-[9px] text-white uppercase tracking-wider mb-1 text-center font-bold">Wastage</p>
                     <h3 id="valTotalWastage" class="text-lg font-black text-red-sifour text-center">0 Cup</h3>
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card border-gradient-gold">
                 <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-3">Total Penjualan Rider</h3>
                 <div class="w-full h-48"><canvas id="chartRider"></canvas></div>
             </div>
             
-            <div id="cardMasaDagangChart" class="card hidden">
+            <div id="cardMasaDagangChart" class="card border-gradient-gold hidden">
                 <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-3"> Masa Dagang Rider</h3>
                 <div class="w-full h-48"><canvas id="chartMasaDagang"></canvas></div>
             </div>
 
-            <div id="cardTrend" class="card hidden">
+            <div id="cardTrend" class="card border-gradient-gold hidden">
                 <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-3">Penjualan Harian</h3>
                 <div class="w-full h-48"><canvas id="chartTrendHarian"></canvas></div>
             </div>
             
-            <div class="card">
+            <div class="card border-gradient-gold">
                 <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-3">Produk Terlaris</h3>
                 <div class="w-full h-56"><canvas id="chartMenu"></canvas></div>
             </div>
 
-            <div class="card relative overflow-hidden !p-0" id="tabelExportContainer">
-                <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-2 border-gradient-gold-bottom p-3">Data Setoran</h3>
+            <div class="card border-gradient-gold relative !p-0" id="tabelExportContainer">
+                <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest p-3 border-gradient-gold-table">Data Setoran</h3>
                 
-                <div class="flex gap-2 mb-3 px-3">
+                <div class="flex gap-2 mb-2 px-3 pt-2">
                     <button onclick="downloadPDFTable()" class="flex-1 bg-red-600 text-white font-bold py-1.5 rounded text-[10px] uppercase shadow-lg shadow-red-600/20">Unduh PDF</button>
                     <button onclick="printTableData()" class="flex-1 bg-emerald-600 text-white font-bold py-1.5 rounded text-[10px] uppercase shadow-lg shadow-emerald-600/20">Print Data</button>
                 </div>
 
-                <div class="w-full max-h-[400px] overflow-y-auto" id="tabelScrollArea">
-                    <table class="w-full text-left text-[9px] relative border-collapse" id="tabelUtamaID">
-                        <thead class="bg-[#111111] text-white uppercase border-gradient-gold-bottom" id="tabelHeader">
+                <div class="w-full max-h-[400px] overflow-y-auto px-1 pb-1" id="tabelScrollArea">
+                    <table class="w-full text-left text-[9px] relative" id="tabelUtamaID">
+                        <thead class="bg-[#111111] text-white uppercase border-gradient-gold-table" id="tabelHeader">
                             <tr>
-                                <th class="p-2 border-r border-[#333]">JUDUL PRODUK</th>
-                                <th class="p-2 text-center border-r border-[#333]">AWAL</th>
-                                <th class="p-2 text-center border-r border-[#333]">BNS</th>
-                                <th class="p-2 text-center border-r border-[#333]">SISA</th>
-                                <th class="p-2 text-center border-r border-[#333]">TUNAI</th>
-                                <th class="p-2 text-center border-r border-[#333]">QRIS</th>
-                                <th class="p-2 text-center text-red-400 font-bold border-r border-[#333]">WSTG</th>
+                                <th class="p-2 border-r border-neutral-700">PRODUK</th>
+                                <th class="p-2 text-center border-r border-neutral-700">AWAL</th>
+                                <th class="p-2 text-center border-r border-neutral-700">BNS</th>
+                                <th class="p-2 text-center border-r border-neutral-700">SISA</th>
+                                <th class="p-2 text-center border-r border-neutral-700">TUNAI</th>
+                                <th class="p-2 text-center border-r border-neutral-700">QRIS</th>
+                                <th class="p-2 text-center text-red-400 font-bold border-r border-neutral-700">WSTG</th>
                                 <th class="p-2 text-center text-emerald-400 font-bold">TOT</th>
                             </tr>
                         </thead>
-                        <tbody id="tabelDataSetoran" class="text-gray-300 divide-y divide-[#333333] bg-[#1e1e1e]"></tbody>
+                        <tbody id="tabelDataSetoran" class="text-gray-300 divide-y divide-neutral-800 bg-[#1e1e1e]"></tbody>
                     </table>
                 </div>
             </div>
@@ -181,67 +174,53 @@
             <h3 class="text-sm font-black text-orange-sifour uppercase tracking-wider">🔒 KEAMANAN DATA</h3>
             <p class="text-xs text-gray-300">Masukkan PIN/Password untuk <br><b id="lblRiderPass" class="text-white"></b></p>
             <div class="relative">
-                <input type="password" id="inputPassword" placeholder="***" onkeydown="if(event.key === 'Enter') cekPassword();" class="w-full border-gradient-gold text-white rounded-lg p-3 text-center tracking-widest font-bold focus:outline-none">
+                <input type="password" id="inputPassword" placeholder="***" onkeydown="if(event.key === 'Enter') cekPassword();" class="w-full bg-[#111111] border-gradient-gold-thin text-white rounded-lg p-3 text-center tracking-widest font-bold focus:outline-none">
+                <button type="button" onclick="toggleMata()" class="absolute right-3 top-1/2 -translate-y-1/2 text-orange-sifour focus:outline-none">
+                    <svg id="mataTutup" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                    <svg id="mataBuka" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                </button>
             </div>
             <p id="errorPassword" class="text-[10px] text-red-500 font-bold hidden">❌ Password Salah! Coba lagi.</p>
             <div class="grid grid-cols-2 gap-3 pt-2">
-                <button onclick="tutupPassword()" class="bg-[#111111] border border-gray-600 text-white font-bold py-2.5 rounded-lg text-xs">Batal</button>
-                <button onclick="cekPassword()" class="bg-gradient-to-r from-[#bf953f] to-[#fbf5b7] text-black font-bold py-2.5 rounded-lg text-xs">Buka Akses</button>
+                <button onclick="tutupPassword()" class="bg-[#111111] border-gradient-gold-thin text-white font-bold py-2.5 rounded-lg text-xs hover:bg-neutral-900 transition">Batal</button>
+                <button onclick="cekPassword()" class="bg-gradient-to-r from-[#bf953f] to-[#fbf5b7] text-[#111111] font-black py-2.5 rounded-lg text-xs">Buka Akses</button>
             </div>
         </div>
     </div>
 
     <script>
-        // ANTI INSPECT
         document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) {
-                return false;
-            }
-        };
+        document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false; };
 
         // WAJIB GANTI URL DEPLOYMENT APPS SCRIPT DI SINI!
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyw5u3a5rWl_JkKdf0pdnt6uP8b-htzmjRIi_RFP1gek6rDDigJf4qQiZMWrmovwhIi/exec"; 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPYR4M0J8EugEaKE03gGHYOY0Y3CZja7hoWyVSBcVv_LUjjiCy64hDnhAZ4TMDpHny/exec"; 
         
         const riderPasswords = { "ADMIN": "jkt221112", "ACHMAD DARMADI": "0000", "RICKY AKBAR": "1234", "JUNAEDI": "1234", "IRWAN SYAHPUTRA": "putra123", "RIJALDI JANUAR": "4321", "RIZKY AKBAR ZAFIRA": "1778" };
 
-        Chart.register(ChartDataLabels);
-        Chart.defaults.color = '#ffffff'; 
+        Chart.register(ChartDataLabels); Chart.defaults.color = '#ffffff'; 
         
         let database = { laporan: [], detail: [], hutang_list: [] };
         let chartRiderObj = null; let chartMenuObj = null; let chartTrendObj = null; let chartMasaDagangObj = null;
         let tempTglMulai = null, tempTglAkhir = null, tempRider = null;
 
-        // Logika Header Scroll
         let lastScrollTop = 0;
         window.addEventListener("scroll", function() {
             let st = window.pageYOffset || document.documentElement.scrollTop;
             let filterPos = document.getElementById('filterPeriode').getBoundingClientRect().top;
             const containerSelect = document.getElementById('riderSelectContainer');
             
-            if (st > lastScrollTop && st > 80) { // Scroll Down
-                containerSelect.style.opacity = '0';
-                setTimeout(() => { if(containerSelect.style.opacity === '0') containerSelect.style.display = 'none'; }, 300);
-            } else if (st < lastScrollTop) { // Scroll Up
-                containerSelect.style.display = 'block';
-                setTimeout(() => { containerSelect.style.opacity = '1'; }, 10);
-            }
-            if (filterPos > 0 && filterPos < window.innerHeight) {
-                containerSelect.style.display = 'block';
-                setTimeout(() => { containerSelect.style.opacity = '1'; }, 10);
-            }
+            if (st > lastScrollTop && st > 80) { containerSelect.style.opacity = '0'; setTimeout(() => { if(containerSelect.style.opacity === '0') containerSelect.style.display = 'none'; }, 300); } 
+            else if (st < lastScrollTop) { containerSelect.style.display = 'block'; setTimeout(() => { containerSelect.style.opacity = '1'; }, 10); }
+            if (filterPos > 0 && filterPos < window.innerHeight) { containerSelect.style.display = 'block'; setTimeout(() => { containerSelect.style.opacity = '1'; }, 10); }
             lastScrollTop = st <= 0 ? 0 : st;
         }, false);
 
-        // Freeze Table Header
         const tScroll = document.getElementById('tabelScrollArea');
         const tHeader = document.getElementById('tabelHeader');
         tScroll.addEventListener("scroll", function() {
-            if(tScroll.scrollTop > 0) tHeader.classList.add("frozen");
-            else tHeader.classList.remove("frozen");
+            if(tScroll.scrollTop > 0) tHeader.classList.add("frozen"); else tHeader.classList.remove("frozen");
         });
 
-        // Ambil Data awal secara asynchronous
         window.onload = async () => {
             aturTanggalOtomatis();
             try {
@@ -251,65 +230,67 @@
             } catch (err) { document.getElementById('loading').innerText = "Gagal memuat data. Periksa URL Apps Script."; }
         };
 
+        function toggleMata() {
+            const inp = document.getElementById('inputPassword');
+            const mb = document.getElementById('mataBuka'); const mt = document.getElementById('mataTutup');
+            if(inp.type === "password") { inp.type = "text"; mb.classList.remove('hidden'); mt.classList.add('hidden'); }
+            else { inp.type = "password"; mb.classList.add('hidden'); mt.classList.remove('hidden'); }
+        }
+
         function ubahWarnaRider() { const el = document.getElementById('riderSelect'); el.classList.remove('error-merah'); el.classList.add('terpilih-oren'); }
         function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); }
 
+        function formatDateOutput(d) {
+            return `${d.getFullYear()}-${("0"+(d.getMonth()+1)).slice(-2)}-${("0"+d.getDate()).slice(-2)}`;
+        }
+
+        // LOGIKA PERBAIKAN TANGGAL 16 - 15 UNTUK SEMUA RIDER (Bulan Ini & Bulan Kemarin)
         function aturTanggalOtomatis() {
-            const p = document.getElementById('periodeSelect').value; const t1 = document.getElementById('tglMulai'); const t2 = document.getElementById('tglAkhir');
-            const d = new Date(); let s = new Date(); let e = new Date();
+            const p = document.getElementById('periodeSelect').value; 
+            const t1 = document.getElementById('tglMulai'); 
+            const t2 = document.getElementById('tglAkhir');
+            const d = new Date(); 
+            let s = new Date(); let e = new Date();
             
-            if (p === 'kemarin') { 
+            if (p === 'hari_ini') {
+                // Biarkan s dan e sama dengan hari ini
+            } else if (p === 'kemarin') { 
                 s.setDate(d.getDate() - 1); e.setDate(d.getDate() - 1); 
-            } 
-            else if (p === 'minggu_ini') { 
+            } else if (p === 'minggu_ini') { 
                 const day = d.getDay(); const diff = d.getDate() - day + (day == 0 ? -6 : 1); 
                 s = new Date(d.setDate(diff)); e = new Date(); 
-            } 
-            // PERBAIKAN LOGIKA TANGGAL 16 S/D 15 BULAN BERIKUTNYA
-            else if (p === 'bulan_ini') { 
-                let y = d.getFullYear(); 
-                let m = d.getMonth(); 
-                if (d.getDate() < 16) {
-                     // Jika hari ini sebelum tgl 16, maka "bulan ini" berarti tgl 16 bulan lalu s/d 15 bulan ini
-                     s = new Date(y, m - 1, 16);
-                     e = new Date(y, m, 15);
-                } else {
-                     // Jika hari ini tanggal 16 atau lebih, maka "bulan ini" berarti tgl 16 bulan ini s/d 15 bulan depan
-                     s = new Date(y, m, 16);
-                     e = new Date(y, m + 1, 15);
-                }
-            } 
-            else if (p === 'bulan_kemarin') { 
-                let y = d.getFullYear(); 
-                let m = d.getMonth(); 
-                if (d.getDate() < 16) {
-                     // Jika sebelum tgl 16, "bulan kemarin" adalah 16 dua bulan lalu s/d 15 bulan lalu
-                     s = new Date(y, m - 2, 16);
-                     e = new Date(y, m - 1, 15);
-                } else {
-                     // Jika tgl 16 atau lebih, "bulan kemarin" adalah 16 bulan lalu s/d 15 bulan ini
-                     s = new Date(y, m - 1, 16);
-                     e = new Date(y, m, 15);
-                }
+            } else if (p === 'bulan_ini') { 
+                let y = d.getFullYear(); let m = d.getMonth(); 
+                if (d.getDate() < 16) m -= 1; // Jika skrg tgl 1-15, maka bulan periodenya dimulai bulan lalu
+                s = new Date(y, m, 16); 
+                e = new Date(y, m + 1, 15); 
+            } else if (p === 'bulan_kemarin') { 
+                let y = d.getFullYear(); let m = d.getMonth(); 
+                if (d.getDate() < 16) m -= 2; else m -= 1; 
+                s = new Date(y, m, 16); 
+                e = new Date(y, m + 1, 15); 
+            } else if (p === 'kustom' || !p) {
+                return;
             }
-            else if (p === 'kustom' || !p) return;
-
-            t1.value = `${s.getFullYear()}-${("0"+(s.getMonth()+1)).slice(-2)}-${("0"+s.getDate()).slice(-2)}`; 
-            t2.value = `${e.getFullYear()}-${("0"+(e.getMonth()+1)).slice(-2)}-${("0"+e.getDate()).slice(-2)}`;
+            
+            t1.value = formatDateOutput(s); 
+            t2.value = formatDateOutput(e);
         }
 
         function formatDateDisplay(dateStr) { return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); }
 
-        // WAJIB PASSWORD TIAP KALI KLIK TAMPILKAN
         function mintaPassword() {
             tempRider = document.getElementById('riderSelect').value;
             if (!tempRider) { const rs = document.getElementById('riderSelect'); rs.scrollIntoView({ behavior: 'smooth', block: 'center' }); rs.classList.remove('terpilih-oren'); rs.classList.add('error-merah'); return; }
             if(database.laporan.length === 0) return alert("Data masih memuat dari server, harap tunggu.");
             
             tempTglMulai = document.getElementById('tglMulai').value; tempTglAkhir = document.getElementById('tglAkhir').value;
+            
+            // Validasi Input Tanggal Manual
+            if(!tempTglMulai || !tempTglAkhir) return alert("Harap lengkapi tanggal mulai dan akhir.");
+
             document.getElementById('lblRiderPass').innerText = tempRider; 
-            document.getElementById('inputPassword').value = ""; 
-            document.getElementById('errorPassword').classList.add('hidden'); 
+            document.getElementById('inputPassword').value = ""; document.getElementById('errorPassword').classList.add('hidden'); 
             document.getElementById('passwordModal').classList.replace("hidden", "flex");
             setTimeout(()=> { document.getElementById('inputPassword').focus(); }, 200);
         }
@@ -320,49 +301,53 @@
             const inputPass = document.getElementById('inputPassword').value;
             if (riderPasswords[tempRider] && inputPass === riderPasswords[tempRider]) {
                 tutupPassword(); eksekusiTerapkanFilter();
-            } else document.getElementById('errorPassword').classList.remove('hidden');
+            } else {
+                document.getElementById('errorPassword').classList.remove('hidden');
+            }
         }
 
         function eksekusiTerapkanFilter() {
-            const tMulai = new Date(tempTglMulai).setHours(0,0,0,0); const tAkhir = new Date(tempTglAkhir).setHours(23,59,59,999);
+            // SET WAKTU 00:00:00 UNTUK TGL MULAI DAN 23:59:59 UNTUK TGL AKHIR AGAR SEMUA TERCANGKUP
+            const tMulai = new Date(tempTglMulai).setHours(0,0,0,0); 
+            const tAkhir = new Date(tempTglAkhir).setHours(23,59,59,999);
+            
             const labelPeriode = document.getElementById('periodeSelect').options[document.getElementById('periodeSelect').selectedIndex].text;
             document.getElementById('teksInfoFilter').innerHTML = `Menampilkan data <b>${labelPeriode} </b>(${formatDateDisplay(tempTglMulai)} - ${formatDateDisplay(tempTglAkhir)})`;
             document.getElementById('teksInfoFilter').classList.remove('hidden');
             document.getElementById('dashboardContent').classList.remove('hidden');
+            
             kalkulasiDashboard(tempRider, tMulai, tAkhir);
         }
 
         function kalkulasiDashboard(rider, tMulai, tAkhir) {
             const isAdmin = rider === "ADMIN";
             
-            // Perbaikan Filter: Memastikan membandingkan timestamp dengan benar
+            // FILTER UTAMA TANGGAL (Berlaku untuk Admin dan Rider)
             const laporanFiltered = database.laporan.filter(d => { 
-                if(!d.tanggal) return false;
                 let dTime = new Date(d.tanggal).getTime(); 
                 return dTime >= tMulai && dTime <= tAkhir; 
             });
             const detailFiltered = database.detail.filter(d => { 
-                if(!d.tanggal) return false;
                 let dTime = new Date(d.tanggal).getTime(); 
                 return dTime >= tMulai && dTime <= tAkhir; 
             });
 
+            // FILTER KEDUA RIDER (Khusus jika bukan admin)
             const laporanTerpilih = isAdmin ? laporanFiltered : laporanFiltered.filter(d => d.driver === rider);
             const detailTerpilih = isAdmin ? detailFiltered : detailFiltered.filter(d => d.driver === rider);
 
             let totalCup = 0; let totalKomisi = 0; let hariKerjaSemua = new Set();
-            laporanTerpilih.forEach(d => { 
-                totalCup += (Number(d.volume) || 0); 
-                totalKomisi += (Number(d.komisi) || 0); 
-                hariKerjaSemua.add(d.tanggal + "-" + d.driver); 
-            });
+            laporanTerpilih.forEach(d => { totalCup += d.volume; totalKomisi += d.komisi; hariKerjaSemua.add(d.tanggal + "-" + d.driver); });
 
             let hutangRealtime = 0;
-            if (isAdmin) database.hutang_list.forEach(h => hutangRealtime += (Number(h.nominal) || 0));
-            else { const hd = database.hutang_list.find(h => h.driver === rider); if(hd) hutangRealtime = Number(hd.nominal) || 0; }
+            if (isAdmin) {
+                database.hutang_list.forEach(h => hutangRealtime += h.nominal);
+            } else { 
+                const hd = database.hutang_list.find(h => h.driver === rider); if(hd) hutangRealtime = hd.nominal; 
+            }
 
             let totalWastage = 0;
-            detailTerpilih.forEach(d => { totalWastage += (Number(d.wastage) || 0); });
+            detailTerpilih.forEach(d => { totalWastage += (parseFloat(d.wastage) || 0); });
             document.getElementById('valTotalWastage').innerText = `${totalWastage} Cup`;
 
             let targetAbsensi = 25; let chartMasaDagangLabels = []; let chartMasaDagangData = [];
@@ -406,12 +391,7 @@
             }
 
             const totalBonus = hariKerjaSemua.size * 24000; const komisiPlusBonus = totalKomisi + totalBonus;
-            
-            // UPDATE: Di sheet Laporan_Utama volume ada di row M (index 12), ini sudah dihandle oleh Kode.gs yg mengembalikan d.volume
-            document.getElementById('valPenjualan').innerText = `${totalCup} Cup`; 
-            document.getElementById('valKomisi').innerText = formatRupiah(totalKomisi); 
-            document.getElementById('valTotalBersih').innerText = formatRupiah(totalKomisi + totalBonus); 
-            document.getElementById('valHutang').innerText = formatRupiah(hutangRealtime);
+            document.getElementById('valPenjualan').innerText = `${totalCup} Cup`; document.getElementById('valKomisi').innerText = formatRupiah(totalKomisi); document.getElementById('valTotalBersih').innerText = formatRupiah(totalKomisi + totalBonus); document.getElementById('valHutang').innerText = formatRupiah(hutangRealtime);
 
             const multiplierTarget = isAdmin ? 6 : 1; let targetTerdekat = 0; let statusTeks = ""; let gapTargetPenjualan = 0;
             if (totalCup < (900 * multiplierTarget)) { targetTerdekat = 900 * multiplierTarget; gapTargetPenjualan = targetTerdekat - totalCup; statusTeks = `Belum mencapai target ${targetTerdekat}`; } 
@@ -422,7 +402,8 @@
             document.getElementById('valGapNominal').innerText = gapTargetPenjualan > 0 ? `(-) ${gapTargetPenjualan} Cup` : "(-) 0 Cup";
             document.getElementById('valStatusTarget').innerText = statusTeks;
 
-            let agregatSemuaRider = {}; laporanFiltered.forEach(d => { if(!agregatSemuaRider[d.driver]) agregatSemuaRider[d.driver] = 0; agregatSemuaRider[d.driver] += (Number(d.volume) || 0); });
+            // Chart Ranking Rider (Admin View atau Rider View)
+            let agregatSemuaRider = {}; laporanFiltered.forEach(d => { if(!agregatSemuaRider[d.driver]) agregatSemuaRider[d.driver] = 0; agregatSemuaRider[d.driver] += d.volume; });
             let arrayPeringkat = Object.keys(agregatSemuaRider).map(nama => ({ nama: nama, cup: agregatSemuaRider[nama] })); arrayPeringkat.sort((a, b) => b.cup - a.cup); 
             
             let rankText = "ADMIN VIEW";
@@ -440,10 +421,11 @@
                 options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: Math.ceil((Math.max(...dataChart1)||100) * 1.15), grid: {color: '#333'}, ticks: {color: '#fff'} }, x: { grid: {display: false}, ticks: {color: '#f97316'} } }, plugins: { legend: {display: false}, datalabels: { color: '#ffffff', anchor: 'end', align: 'bottom', font: { weight: 'bold', size: 9 }, formatter: Math.round } } }
             });
 
+            // Trend Harian (Hanya muncul jika rentang tanggal cukup lebar atau isAdmin)
             const elTrend = document.getElementById('cardTrend');
-            if (isAdmin || ['minggu_ini', 'bulan_ini', 'bulan_kemarin'].includes(periodeDipilih)) {
+            if (isAdmin || ['minggu_ini', 'bulan_ini', 'bulan_kemarin', 'kustom'].includes(document.getElementById('periodeSelect').value)) {
                 elTrend.classList.remove('hidden'); let agregatHarian = {};
-                laporanTerpilih.forEach(d => { const tglPdk = d.tanggal.substring(5); if(!agregatHarian[tglPdk]) agregatHarian[tglPdk] = 0; agregatHarian[tglPdk] += (Number(d.volume)||0); });
+                laporanTerpilih.forEach(d => { const tglPdk = d.tanggal.substring(5); if(!agregatHarian[tglPdk]) agregatHarian[tglPdk] = 0; agregatHarian[tglPdk] += d.volume; });
                 let sortedTgl = Object.keys(agregatHarian).sort(); let dataTrend = sortedTgl.map(t => agregatHarian[t]);
                 if(chartTrendObj) chartTrendObj.destroy();
                 chartTrendObj = new Chart(document.getElementById('chartTrendHarian').getContext('2d'), {
@@ -452,7 +434,7 @@
                 });
             } else elTrend.classList.add('hidden');
 
-            let agregatMenu = {}; detailTerpilih.forEach(d => { if(!agregatMenu[d.produk]) agregatMenu[d.produk] = 0; agregatMenu[d.produk] += (Number(d.total_terjual)||0); });
+            let agregatMenu = {}; detailTerpilih.forEach(d => { if(!agregatMenu[d.produk]) agregatMenu[d.produk] = 0; agregatMenu[d.produk] += d.total_terjual; });
             let arrayMenu = Object.keys(agregatMenu).map(nama => ({ menu: nama, cup: agregatMenu[nama] })); arrayMenu.sort((a,b) => b.cup - a.cup);
             if(chartMenuObj) chartMenuObj.destroy();
             chartMenuObj = new Chart(document.getElementById('chartMenu').getContext('2d'), {
@@ -467,17 +449,17 @@
                 detailTerpilih.forEach(d => {
                     if(d.status === "STOK_AWAL_BARU" && d.total_terjual === 0) return; 
                     if (d.tanggal !== tglSkrg || (isAdmin && d.driver !== drvSkrg)) {
-                        tbody.innerHTML += `<tr><td colspan="8" class="p-2 text-center text-[10px] font-black text-[#111111] border-b border-emas tracking-widest bg-gradient-to-r from-[#bf953f] to-[#fbf5b7]">${isAdmin ? `TGL: ${formatDateDisplay(d.tanggal)} - ${d.driver.split(' ')[0]}` : `TANGGAL: ${formatDateDisplay(d.tanggal)}`}</td></tr>`;
+                        tbody.innerHTML += `<tr class="bg-[#111111]"><td colspan="8" class="p-2 text-center text-[10px] font-black text-[#FFD700] border-y border-emas tracking-widest">${isAdmin ? `TGL: ${formatDateDisplay(d.tanggal)} - ${d.driver.split(' ')[0]}` : `TANGGAL: ${formatDateDisplay(d.tanggal)}`}</td></tr>`;
                         tglSkrg = d.tanggal; drvSkrg = d.driver;
                     }
-                    tbody.innerHTML += `<tr class="border-b border-[#333333] hover:bg-[#222222]">
-                        <td class="p-2 text-gray-200 border-r border-[#333]">${d.produk.replace('SI ','')}</td>
-                        <td class="p-2 text-center text-gray-500 border-r border-[#333]">${d.stok_awal}</td>
-                        <td class="p-2 text-center text-blue-400 border-r border-[#333]">${d.bonus}</td>
-                        <td class="p-2 text-center text-gray-400 border-r border-[#333]">${d.sisa}</td>
-                        <td class="p-2 text-center text-emerald-400 border-r border-[#333]">${d.terjual_tunai}</td>
-                        <td class="p-2 text-center text-purple-400 border-r border-[#333]">${d.terjual_qris}</td>
-                        <td class="p-2 text-center text-red-400 border-r border-[#333]">${d.wastage || 0}</td>
+                    tbody.innerHTML += `<tr class="border-b border-neutral-800 hover:bg-[#222222]">
+                        <td class="p-2 text-gray-200 border-r border-neutral-700">${d.produk.replace('SI ','')}</td>
+                        <td class="p-2 text-center text-gray-500 border-r border-neutral-700">${d.stok_awal}</td>
+                        <td class="p-2 text-center text-blue-400 border-r border-neutral-700">${d.bonus}</td>
+                        <td class="p-2 text-center text-gray-400 border-r border-neutral-700">${d.sisa}</td>
+                        <td class="p-2 text-center text-emerald-400 border-r border-neutral-700">${d.terjual_tunai}</td>
+                        <td class="p-2 text-center text-purple-400 border-r border-neutral-700">${d.terjual_qris}</td>
+                        <td class="p-2 text-center text-red-400 border-r border-neutral-700">${d.wastage || 0}</td>
                         <td class="p-2 text-center font-black text-orange-500">${d.total_terjual}</td>
                     </tr>`;
                 });
@@ -486,17 +468,8 @@
             document.getElementById('tabelHeader').classList.remove('frozen');
         }
 
-        function downloadPDFTable() {
-            var element = document.getElementById('tabelUtamaID');
-            var opt = { margin: 0.5, filename: 'DataSetoran_SIFOURAM.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
-            html2pdf().set(opt).from(element).save();
-        }
-
-        function printTableData() {
-            var printContents = document.getElementById('tabelExportContainer').innerHTML; var originalContents = document.body.innerHTML;
-            document.body.innerHTML = "<html><head><title>Print Data</title></head><body style='background:#111; color:white; font-family:sans-serif;'>" + printContents + "</body></html>";
-            window.print(); document.body.innerHTML = originalContents; window.location.reload(); 
-        }
+        function downloadPDFTable() { var element = document.getElementById('tabelUtamaID'); var opt = { margin: 0.5, filename: 'DataSetoran_SIFOURAM.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } }; html2pdf().set(opt).from(element).save(); }
+        function printTableData() { var printContents = document.getElementById('tabelExportContainer').innerHTML; var originalContents = document.body.innerHTML; document.body.innerHTML = "<html><head><title>Print Data</title></head><body style='background:#111; color:white; font-family:sans-serif;'>" + printContents + "</body></html>"; window.print(); document.body.innerHTML = originalContents; window.location.reload(); }
     </script>
 </body>
 </html>
