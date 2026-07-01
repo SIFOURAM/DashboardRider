@@ -10,127 +10,163 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         body { background-color: #111111; color: #ffffff; font-family: sans-serif; -webkit-tap-highlight-color: transparent;}
-        .card { background-color: #1e1e1e; border-radius: 0.5rem; border: 1px solid #FFD700; padding: 0.75rem 1rem; }
-        .text-black-sifour { color: #111111; } .text-orange-sifour { color: #f97316; } .text-red-sifour { color: #FF0000; }
-        .bg-orange-sifour { background-color: #f97316; }
-        .border-emas { border-color: #FFD700 !important; }
-        .terpilih-oren { background-color: #111111; color: #f97316; border-color: #f97316 !important; font-weight: bold;}
-        .error-merah { background-color: #fee2e2; color: #b91c1c; border-color: #ef4444 !important; animation: shake 0.5s;}
+        
+        /* Tema Premium Gold Gradient */
+        .card { 
+            background: linear-gradient(#1e1e1e, #1e1e1e) padding-box, linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) border-box; 
+            border: 1.5px solid transparent; 
+            border-radius: 0.75rem; 
+            padding: 1rem; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5); 
+        }
+        .input-gold {
+            background: linear-gradient(#111111, #111111) padding-box, linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) border-box; 
+            border: 1.5px solid transparent; 
+        }
+        .btn-gold {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            color: #111111;
+            font-weight: 900;
+        }
+        .border-gradient-gold-thick { 
+            background: linear-gradient(#1e1e1e, #1e1e1e) padding-box, linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c) border-box; 
+            border: 3px solid transparent; 
+        }
+
+        .text-orange-sifour { color: #f57c00; } 
+        .bg-orange-sifour { background-color: #f57c00; }
+        
+        .terpilih-oren { color: #fcf6ba !important; font-weight: bold;}
+        .error-merah { background: linear-gradient(#fee2e2, #fee2e2) padding-box, linear-gradient(to right, #ef4444, #b91c1c) border-box; color: #b91c1c; border: 1.5px solid transparent; animation: shake 0.5s;}
+        
         @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
-        ::-webkit-scrollbar { width: 4px; height: 4px; } ::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 4px; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; } ::-webkit-scrollbar-thumb { background: #bf953f; border-radius: 4px; }
         .no-select { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+        
         #headerRider { transition: top 0.3s ease-in-out; }
         #tabelHeader.frozen { position: sticky; top: 0; z-index: 20; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); }
     </style>
 </head>
 <body class="pb-10 no-select" oncontextmenu="return false;">
 
-    <div id="headerRider" class="bg-[#f97316] p-2 border-b border-emas sticky top-0 z-50 shadow-md">
-        <h1 class="text-xl font-black text-center tracking-wider text-black-sifour mb-3">DASHBOARD SI FOUR AM</h1>
+    <div id="headerRider" class="bg-[#f57c00] p-3 sticky top-0 z-50 shadow-md" style="border-bottom: 2px solid #bf953f;">
+        <h1 class="text-xl font-black text-center tracking-wider text-[#111111] mb-3">DASHBOARD SI FOUR AM</h1>
         <div id="riderSelectContainer" class="relative max-w-lg mx-auto transition-opacity duration-300">
-            <select id="riderSelect" onchange="ubahWarnaRider()" class="w-full bg-[#1e1e1e] text-orange-sifour border border-emas rounded-lg p-2 text-sm appearance-none focus:outline-none transition-colors duration-300">
+            <select id="riderSelect" onchange="ubahWarnaRider()" class="w-full text-orange-sifour rounded-lg p-2.5 text-sm appearance-none focus:outline-none transition-colors duration-300 input-gold">
                 <option value="" disabled selected>-- Pilih Hak Akses --</option>
-                <option value="ADMIN" class="font-bold text-orange-400 bg-black">🛡️ ADMIN (SEMUA DATA RIDER)</option>
-                <option value="ACHMAD DARMADI" class="font-bold text-orange-400 bg-black">ADI</option>
-                <option value="RICKY AKBAR" class="font-bold text-orange-400 bg-black">RICKY</option>
-                <option value="JUNAEDI" class="font-bold text-orange-400 bg-black">JUNAEDI</option>
-                <option value="IRWAN SYAHPUTRA" class="font-bold text-orange-400 bg-black">IRWAN</option>
-                <option value="RIJALDI JANUAR" class="font-bold text-orange-400 bg-black">RIJAL</option>
-                <option value="RIZKY AKBAR ZAFIRA" class="font-bold text-orange-400 bg-black">ZAFIRA</option>
+                <option value="ADMIN" class="font-bold text-[#fcf6ba] bg-black">🛡️ ADMIN (SEMUA DATA RIDER)</option>
+                <option value="ACHMAD DARMADI" class="font-bold text-[#fcf6ba] bg-black">ADI</option>
+                <option value="RICKY AKBAR" class="font-bold text-[#fcf6ba] bg-black">RICKY</option>
+                <option value="JUNAEDI" class="font-bold text-[#fcf6ba] bg-black">JUNAEDI</option>
+                <option value="IRWAN SYAHPUTRA" class="font-bold text-[#fcf6ba] bg-black">IRWAN</option>
+                <option value="RIJALDI JANUAR" class="font-bold text-[#fcf6ba] bg-black">RIJAL</option>
+                <option value="RIZKY AKBAR ZAFIRA" class="font-bold text-[#fcf6ba] bg-black">ZAFIRA</option>
             </select>
-            <div class="pointer-events-none absolute bottom-2.5 right-0 flex items-center px-3 text-orange-sifour">▼</div>
+            <div class="pointer-events-none absolute bottom-3 right-0 flex items-center px-3 text-[#fcf6ba]">▼</div>
         </div>
     </div>
 
-    <div class="p-2 space-y-2 max-w-lg mx-auto" id="mainContainer">
-        <div class="card space-y-2" id="filterPeriode">
-            <select id="periodeSelect" class="w-full bg-[#111111] text-orange-sifour rounded p-2 text-xs border border-emas focus:outline-none" onchange="aturTanggalOtomatis()">
+    <div class="p-3 space-y-3 max-w-lg mx-auto" id="mainContainer">
+        
+        <div class="card space-y-3" id="filterPeriode">
+            <select id="periodeSelect" class="w-full text-orange-sifour rounded-lg p-2.5 text-xs focus:outline-none input-gold" onchange="aturTanggalOtomatis()">
 		        <option value="" disabled selected>-- Pilih Periode --</option>
-                <option value="hari_ini">Hari Ini</option><option value="kemarin">Kemarin</option><option value="minggu_ini">Minggu Ini</option><option value="bulan_ini">Bulan Ini</option><option value="bulan_kemarin">Bulan Kemarin</option><option value="kustom">Pilih Kustom</option>
+                <option value="hari_ini">Hari Ini</option>
+                <option value="kemarin">Kemarin</option>
+                <option value="minggu_ini">Minggu Ini</option>
+                <option value="bulan_ini">Bulan Ini</option>
+                <option value="bulan_kemarin">Bulan Kemarin</option>
+                <option value="kustom">Pilih Kustom</option>
             </select>
             <div class="grid grid-cols-2 gap-2">
-                <div><input type="date" id="tglMulai" class="w-full bg-[#111111] text-orange-sifour rounded p-2 text-xs border border-emas"></div>
-                <div><input type="date" id="tglAkhir" class="w-full bg-[#111111] text-orange-sifour rounded p-2 text-xs border border-emas"></div>
+                <div><input type="date" id="tglMulai" class="w-full text-orange-sifour rounded-lg p-2.5 text-xs focus:outline-none input-gold"></div>
+                <div><input type="date" id="tglAkhir" class="w-full text-orange-sifour rounded-lg p-2.5 text-xs focus:outline-none input-gold"></div>
             </div>
-            <button onclick="mintaPassword()" class="w-full bg-orange-sifour text-black-sifour font-bold py-2 rounded-lg text-sm hover:bg-orange-600 transition mt-2 shadow-lg tracking-wider border border-emas">TAMPILKAN</button>
-            <div id="teksInfoFilter" class="text-center text-[10px] text-orange-sifour font-medium hidden pt-1"></div>
+            <button onclick="mintaPassword()" class="w-full btn-gold py-3 rounded-lg text-sm hover:opacity-90 transition mt-2 shadow-lg tracking-wider uppercase">TAMPILKAN DATA</button>
+            <div id="teksInfoFilter" class="text-center text-[10px] text-orange-sifour font-bold hidden pt-1"></div>
         </div>
 
-        <div id="loading" class="text-center text-xs text-orange-sifour py-10 font-bold animate-pulse">Memuat Data Database...</div>
+        <div id="loading" class="text-center text-xs text-orange-sifour py-10 font-bold animate-pulse">Menghubungkan ke Database...</div>
 
-        <div id="dashboardContent" class="hidden space-y-2">
-            <div class="card flex flex-col items-center justify-center text-center space-y-0.5 border-emas">
+        <div id="dashboardContent" class="hidden space-y-3">
+            
+            <div class="card flex flex-col items-center justify-center text-center space-y-1">
                 <p class="text-[10px] text-white uppercase tracking-widest font-bold">Total Penjualan Cup</p>
-                <h2 id="valPenjualan" class="text-3xl font-black text-orange-sifour">0 Cup</h2>
+                <h2 id="valPenjualan" class="text-4xl font-black text-[#fcf6ba]">0 Cup</h2>
             </div>
-            <div class="card flex flex-col items-center justify-center text-center space-y-0.1 border-emas">
+            
+            <div class="card flex flex-col items-center justify-center text-center space-y-1">
                 <p class="text-[10px] text-orange-sifour uppercase tracking-widest font-bold">Total Komisi Rider</p>
                 <h2 id="valKomisi" class="text-2xl font-bold text-white">Rp 0</h2>
             </div>
-            <div class="card flex flex-col items-center justify-center text-center space-y-0.1 border-emas bg-orange-900/20">
-                <p class="text-[10px] text-white uppercase tracking-widest font-bold">Total Komisi + Bonus</p>
-                <h2 id="valTotalBersih" class="text-3xl font-black text-orange-sifour">Rp 0</h2>
+            
+            <div class="card flex flex-col items-center justify-center text-center space-y-1 relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#bf953f]/10 to-[#fbf5b7]/10 z-0"></div>
+                <p class="text-[10px] text-white uppercase tracking-widest font-bold z-10">Total Komisi + Bonus</p>
+                <h2 id="valTotalBersih" class="text-3xl font-black text-orange-sifour z-10">Rp 0</h2>
             </div>
-            <div class="card flex flex-col items-center justify-center text-center space-y-0.1 border-emas">
+            
+            <div class="card flex flex-col items-center justify-center text-center space-y-1">
                 <p class="text-[10px] text-white uppercase tracking-widest font-bold">Peringkat Rider</p>
                 <h2 id="valPeringkat" class="text-xl font-black text-[#FFD700] mt-1">-</h2>
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
-                <div class="card flex flex-col justify-between py-3 border-emas">
-                    <p class="text-[9px] text-center text-white uppercase tracking-wider mb-1 font-bold">Target Penjualan</p>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="card flex flex-col justify-between py-4">
+                    <p class="text-[9px] text-center text-white uppercase tracking-wider mb-2 font-bold">Target Penjualan</p>
                     <h3 id="valGapNominal" class="text-lg font-bold text-center text-orange-sifour">(-) 0 Cup</h3>
-                    <p id="valStatusTarget" class="text-[9px] text-center text-red-sifour mt-1 leading-tight">Belum mencapai target</p>
+                    <p id="valStatusTarget" class="text-[9px] text-center text-red-500 mt-1 leading-tight">Belum mencapai target</p>
                 </div>
-                <div class="card flex flex-col justify-between py-3 border-emas">
-                    <p class="text-[9px] text-white uppercase tracking-wider mb-1 text-center font-bold">Sisa Hutang Rider</p>
-                    <h3 id="valHutang" class="text-lg font-black text-red-sifour text-center">Rp 0</h3>
+                <div class="card flex flex-col justify-between py-4">
+                    <p class="text-[9px] text-white uppercase tracking-wider mb-2 text-center font-bold">Sisa Hutang Rider</p>
+                    <h3 id="valHutang" class="text-lg font-black text-red-500 text-center">Rp 0</h3>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
-                <div class="card flex flex-col justify-between py-3 border-emas">
-                    <p class="text-[9px] text-center text-white uppercase tracking-wider mb-1 font-bold">Masa Dagang</p>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="card flex flex-col justify-between py-4">
+                    <p class="text-[9px] text-center text-white uppercase tracking-wider mb-2 font-bold">Masa Dagang</p>
                     <h3 id="valMasaDagang" class="text-lg font-bold text-center text-orange-sifour">0/25 Hari</h3>
                     <p id="valStatusMasaDagang" class="text-[9px] text-center text-orange-400 mt-1 leading-tight">-</p>
                 </div>
-                <div class="card flex flex-col justify-between py-3 border-emas">
-                    <p class="text-[9px] text-white uppercase tracking-wider mb-1 text-center font-bold">Wastage</p>
-                    <h3 id="valTotalWastage" class="text-lg font-black text-red-sifour text-center">0 Cup</h3>
+                <div class="card flex flex-col justify-between py-4">
+                    <p class="text-[9px] text-white uppercase tracking-wider mb-2 text-center font-bold">Total Wastage</p>
+                    <h3 id="valTotalWastage" class="text-lg font-black text-red-500 text-center">0 Cup</h3>
                 </div>
             </div>
 
-            <div class="card border-emas">
-                <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-3">Total Penjualan Rider</h3>
+            <div class="card">
+                <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-4">Total Penjualan Rider</h3>
                 <div class="w-full h-48"><canvas id="chartRider"></canvas></div>
             </div>
             
-            <div id="cardMasaDagangChart" class="card hidden border-emas">
-                <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-3"> Masa Dagang Rider</h3>
+            <div id="cardMasaDagangChart" class="card hidden">
+                <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-4">Grafik Masa Dagang Rider</h3>
                 <div class="w-full h-48"><canvas id="chartMasaDagang"></canvas></div>
             </div>
 
-            <div id="cardTrend" class="card hidden border-emas">
-                <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-3">Penjualan Harian</h3>
+            <div id="cardTrend" class="card hidden">
+                <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-4">Trend Penjualan Harian</h3>
                 <div class="w-full h-48"><canvas id="chartTrendHarian"></canvas></div>
             </div>
             
-            <div class="card border-emas">
-                <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-3">Produk Terlaris</h3>
+            <div class="card">
+                <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-4">Produk Terlaris</h3>
                 <div class="w-full h-56"><canvas id="chartMenu"></canvas></div>
             </div>
 
-            <div class="card border-emas relative" id="tabelExportContainer">
-                <h3 class="text-[10px] font-bold text-center text-orange-sifour uppercase tracking-widest mb-2 border-b border-emas pb-2">Data Setoran</h3>
-                
-                <div class="flex gap-2 mb-3">
-                    <button onclick="downloadPDFTable()" class="flex-1 bg-red-600 text-white font-bold py-1.5 rounded text-[10px] uppercase shadow-lg shadow-red-600/20">Unduh PDF</button>
-                    <button onclick="printTableData()" class="flex-1 bg-emerald-600 text-white font-bold py-1.5 rounded text-[10px] uppercase shadow-lg shadow-emerald-600/20">Print Data</button>
+            <div class="card relative p-0 overflow-hidden" id="tabelExportContainer">
+                <div class="p-3 border-b border-neutral-800" style="border-bottom: 1px solid #bf953f;">
+                    <h3 class="text-[10px] font-bold text-center text-[#fcf6ba] uppercase tracking-widest mb-3">Data Setoran</h3>
+                    <div class="flex gap-2">
+                        <button onclick="downloadPDFTable()" class="flex-1 bg-red-600 text-white font-bold py-2 rounded text-[10px] uppercase shadow-lg shadow-red-600/20">Unduh PDF</button>
+                        <button onclick="printTableData()" class="flex-1 bg-emerald-600 text-white font-bold py-2 rounded text-[10px] uppercase shadow-lg shadow-emerald-600/20">Print Data</button>
+                    </div>
                 </div>
 
                 <div class="w-full max-h-[400px] overflow-y-auto" id="tabelScrollArea">
                     <table class="w-full text-left text-[9px] relative" id="tabelUtamaID">
-                        <thead class="bg-[#111111] text-white uppercase border-b border-emas" id="tabelHeader">
+                        <thead class="bg-[#111111] text-[#fcf6ba] uppercase" id="tabelHeader" style="border-bottom: 1px solid #bf953f;">
                             <tr>
                                 <th class="p-2 border-r border-[#333]">JUDUL PRODUK</th>
                                 <th class="p-2 text-center border-r border-[#333]">AWAL</th>
@@ -138,7 +174,7 @@
                                 <th class="p-2 text-center border-r border-[#333]">SISA</th>
                                 <th class="p-2 text-center border-r border-[#333]">TUNAI</th>
                                 <th class="p-2 text-center border-r border-[#333]">QRIS</th>
-                                <th class="p-2 text-center text-red-400 font-bold border-r border-[#333]">WSTG</th>
+                                <th class="p-2 text-center text-red-500 font-bold border-r border-[#333]">WSTG</th>
                                 <th class="p-2 text-center text-emerald-400 font-bold">TOT</th>
                             </tr>
                         </thead>
@@ -150,20 +186,20 @@
     </div>
 
     <div id="passwordModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 px-4 hidden backdrop-blur-md">
-        <div class="bg-[#1e1e1e] border border-emas w-full max-w-xs rounded-2xl p-6 text-center space-y-4 shadow-2xl">
+        <div class="border-gradient-gold-thick w-full max-w-xs rounded-2xl p-6 text-center space-y-4 shadow-2xl">
             <h3 class="text-sm font-black text-orange-sifour uppercase tracking-wider">🔒 KEAMANAN DATA</h3>
-            <p class="text-xs text-gray-300">Masukkan PIN/Password untuk <br><b id="lblRiderPass" class="text-white"></b></p>
-            <div class="relative">
-                <input type="password" id="inputPassword" placeholder="***" onkeydown="if(event.key === 'Enter') cekPassword();" class="w-full bg-[#111111] border border-emas text-white rounded-lg p-3 text-center tracking-widest font-bold focus:outline-none focus:border-orange-500">
+            <p class="text-xs text-gray-300">Masukkan PIN/Password untuk <br><b id="lblRiderPass" class="text-white text-sm"></b></p>
+            <div class="relative mt-2">
+                <input type="password" id="inputPassword" placeholder="••••••••" onkeydown="if(event.key === 'Enter') cekPassword();" class="w-full input-gold text-white rounded-lg p-3 text-center tracking-widest font-bold focus:outline-none">
                 <button type="button" onclick="toggleMata()" class="absolute right-3 top-1/2 -translate-y-1/2 text-orange-sifour focus:outline-none">
                     <svg id="mataTutup" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
                     <svg id="mataBuka" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 </button>
             </div>
             <p id="errorPassword" class="text-[10px] text-red-500 font-bold hidden">❌ Password Salah! Coba lagi.</p>
-            <div class="grid grid-cols-2 gap-3 pt-2">
-                <button onclick="tutupPassword()" class="bg-[#111111] border border-emas text-white font-bold py-2.5 rounded-lg text-xs">Batal</button>
-                <button onclick="cekPassword()" class="bg-orange-sifour text-black-sifour font-bold py-2.5 rounded-lg text-xs border border-emas">Buka Akses</button>
+            <div class="grid grid-cols-2 gap-3 pt-4">
+                <button onclick="tutupPassword()" class="bg-[#2a2a2a] text-white font-bold py-2.5 rounded-xl text-xs">Batal</button>
+                <button onclick="cekPassword()" class="btn-gold py-2.5 rounded-xl text-xs">Buka Akses</button>
             </div>
         </div>
     </div>
@@ -171,39 +207,47 @@
     <script>
         // ANTI INSPECT AMAN
         document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) {
-                return false;
-            }
-        };
+        document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && e.keyCode == 85)) return false; };
 
         // WAJIB GANTI URL DEPLOYMENT APPS SCRIPT DI SINI!
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPYR4M0J8EugEaKE03gGHYOY0Y3CZja7hoWyVSBcVv_LUjjiCy64hDnhAZ4TMDpHny/exec"; 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyw5u3a5rWl_JkKdf0pdnt6uP8b-htzmjRIi_RFP1gek6rDDigJf4qQiZMWrmovwhIi/exec"; 
         
         const riderPasswords = { "ADMIN": "jkt221112", "ACHMAD DARMADI": "0000", "RICKY AKBAR": "1234", "JUNAEDI": "1234", "IRWAN SYAHPUTRA": "putra123", "RIJALDI JANUAR": "4321", "RIZKY AKBAR ZAFIRA": "1778" };
 
-        Chart.register(ChartDataLabels); Chart.defaults.color = '#ffffff'; 
+        Chart.register(ChartDataLabels);
+        Chart.defaults.color = '#ffffff'; 
         
         let database = { laporan: [], detail: [], hutang_list: [] };
         let chartRiderObj = null; let chartMenuObj = null; let chartTrendObj = null; let chartMasaDagangObj = null;
         let tempTglMulai = null, tempTglAkhir = null, tempRider = null;
 
+        // Logika Menyembunyikan Header saat Scroll
         let lastScrollTop = 0;
         window.addEventListener("scroll", function() {
             let st = window.pageYOffset || document.documentElement.scrollTop;
             let filterPos = document.getElementById('filterPeriode').getBoundingClientRect().top;
             const containerSelect = document.getElementById('riderSelectContainer');
             
-            if (st > lastScrollTop && st > 80) { containerSelect.style.opacity = '0'; setTimeout(() => { if(containerSelect.style.opacity === '0') containerSelect.style.display = 'none'; }, 300); } 
-            else if (st < lastScrollTop) { containerSelect.style.display = 'block'; setTimeout(() => { containerSelect.style.opacity = '1'; }, 10); }
-            if (filterPos > 0 && filterPos < window.innerHeight) { containerSelect.style.display = 'block'; setTimeout(() => { containerSelect.style.opacity = '1'; }, 10); }
+            if (st > lastScrollTop && st > 80) { // Scroll Down
+                containerSelect.style.opacity = '0';
+                setTimeout(() => { if(containerSelect.style.opacity === '0') containerSelect.style.display = 'none'; }, 300);
+            } else if (st < lastScrollTop) { // Scroll Up
+                containerSelect.style.display = 'block';
+                setTimeout(() => { containerSelect.style.opacity = '1'; }, 10);
+            }
+            if (filterPos > 0 && filterPos < window.innerHeight) {
+                containerSelect.style.display = 'block';
+                setTimeout(() => { containerSelect.style.opacity = '1'; }, 10);
+            }
             lastScrollTop = st <= 0 ? 0 : st;
         }, false);
 
+        // Freeze Table Header on internal scroll
         const tScroll = document.getElementById('tabelScrollArea');
         const tHeader = document.getElementById('tabelHeader');
         tScroll.addEventListener("scroll", function() {
-            if(tScroll.scrollTop > 0) tHeader.classList.add("frozen"); else tHeader.classList.remove("frozen");
+            if(tScroll.scrollTop > 0) tHeader.classList.add("frozen");
+            else tHeader.classList.remove("frozen");
         });
 
         window.onload = async () => {
@@ -222,18 +266,19 @@
             else { inp.type = "password"; mb.classList.add('hidden'); mt.classList.remove('hidden'); }
         }
 
-        function cekEnterKey(e) { if(e.key === "Enter" || e.keyCode === 13) { e.preventDefault(); cekPassword(); } }
         function ubahWarnaRider() { const el = document.getElementById('riderSelect'); el.classList.remove('error-merah'); el.classList.add('terpilih-oren'); }
         function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); }
 
         function aturTanggalOtomatis() {
             const p = document.getElementById('periodeSelect').value; const t1 = document.getElementById('tglMulai'); const t2 = document.getElementById('tglAkhir');
-            const d = new Date(); let s = new Date(); let e = new Date();
+            const d = new Date(); let s = new Date(); let e = new Date(); let y = d.getFullYear(); let m = d.getMonth();
+            
             if (p === 'kemarin') { s.setDate(d.getDate() - 1); e.setDate(d.getDate() - 1); } 
             else if (p === 'minggu_ini') { const day = d.getDay(); const diff = d.getDate() - day + (day == 0 ? -6 : 1); s = new Date(d.setDate(diff)); e = new Date(); } 
-            else if (p === 'bulan_ini') { let y = d.getFullYear(); let m = d.getMonth(); if (d.getDate() < 16) m -= 1; s = new Date(y, m, 16); e = new Date(y, m + 1, 15); } 
-            else if (p === 'bulan_kemarin') { let y = d.getFullYear(); let m = d.getMonth(); if (d.getDate() < 16) m -= 2; else m -= 1; s = new Date(y, m, 16); e = new Date(y, m + 1, 15); }
+            else if (p === 'bulan_ini') { s = new Date(y, m, 1); e = new Date(y, m + 1, 0); } // 1st to End of Current Month
+            else if (p === 'bulan_kemarin') { s = new Date(y, m - 1, 1); e = new Date(y, m, 0); } // 1st to End of Previous Month
             else if (p === 'kustom' || !p) return;
+            
             t1.value = `${s.getFullYear()}-${("0"+(s.getMonth()+1)).slice(-2)}-${("0"+s.getDate()).slice(-2)}`; 
             t2.value = `${e.getFullYear()}-${("0"+(e.getMonth()+1)).slice(-2)}-${("0"+e.getDate()).slice(-2)}`;
         }
@@ -246,8 +291,11 @@
             if(database.laporan.length === 0) return alert("Data masih memuat dari server, harap tunggu.");
             
             tempTglMulai = document.getElementById('tglMulai').value; tempTglAkhir = document.getElementById('tglAkhir').value;
+            
+            // Wajib selalu minta password setiap klik tombol tampilkan
             document.getElementById('lblRiderPass').innerText = tempRider; 
-            document.getElementById('inputPassword').value = ""; document.getElementById('errorPassword').classList.add('hidden'); 
+            document.getElementById('inputPassword').value = ""; 
+            document.getElementById('errorPassword').classList.add('hidden'); 
             document.getElementById('passwordModal').classList.replace("hidden", "flex");
             setTimeout(()=> { document.getElementById('inputPassword').focus(); }, 200);
         }
@@ -278,16 +326,23 @@
             const laporanTerpilih = isAdmin ? laporanFiltered : laporanFiltered.filter(d => d.driver === rider);
             const detailTerpilih = isAdmin ? detailFiltered : detailFiltered.filter(d => d.driver === rider);
 
-            let totalCup = 0; let totalKomisi = 0; let hariKerjaSemua = new Set();
-            laporanTerpilih.forEach(d => { totalCup += d.volume; totalKomisi += d.komisi; hariKerjaSemua.add(d.tanggal + "-" + d.driver); });
+            // Perhitungan Murni dari Database Detail agar Akurat
+            let totalCup = 0; 
+            let totalWastage = 0;
+            detailTerpilih.forEach(d => { 
+                totalCup += d.total_terjual; 
+                totalWastage += (parseFloat(d.wastage) || 0); 
+            });
+            document.getElementById('valPenjualan').innerText = `${totalCup} Cup`; 
+            document.getElementById('valTotalWastage').innerText = `${totalWastage} Cup`;
+
+            let totalKomisi = 0; 
+            let hariKerjaSemua = new Set();
+            laporanTerpilih.forEach(d => { totalKomisi += d.komisi; hariKerjaSemua.add(d.tanggal + "-" + d.driver); });
 
             let hutangRealtime = 0;
             if (isAdmin) database.hutang_list.forEach(h => hutangRealtime += h.nominal);
             else { const hd = database.hutang_list.find(h => h.driver === rider); if(hd) hutangRealtime = hd.nominal; }
-
-            let totalWastage = 0;
-            detailTerpilih.forEach(d => { totalWastage += (parseFloat(d.wastage) || 0); });
-            document.getElementById('valTotalWastage').innerText = `${totalWastage} Cup`;
 
             let targetAbsensi = 25; let chartMasaDagangLabels = []; let chartMasaDagangData = [];
 
@@ -302,13 +357,13 @@
                 
                 document.getElementById('valMasaDagang').innerText = "ADMIN VIEW";
                 document.getElementById('valStatusMasaDagang').innerText = "Lihat grafik masa dagang di bawah";
-                document.getElementById('valStatusMasaDagang').className = "text-[9px] text-center text-orange-400 mt-1 leading-tight";
+                document.getElementById('valStatusMasaDagang').className = "text-[9px] text-center text-[#fcf6ba] mt-1 leading-tight";
 
                 document.getElementById('cardMasaDagangChart').classList.remove('hidden');
                 if(chartMasaDagangObj) chartMasaDagangObj.destroy();
                 chartMasaDagangObj = new Chart(document.getElementById('chartMasaDagang').getContext('2d'), {
                     type: 'bar', data: { labels: chartMasaDagangLabels, datasets: [{ data: chartMasaDagangData, backgroundColor: '#f97316', borderRadius: 4 }] },
-                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: Math.ceil((Math.max(...chartMasaDagangData)||30) * 1.15), grid: {color: '#333'}, ticks: {color: '#fff'} }, x: { grid: {display: false}, ticks: {color: '#f97316'} } }, plugins: { legend: {display: false}, datalabels: { color: '#ffffff', anchor: 'end', align: 'bottom', font: { weight: 'bold', size: 9 }, formatter: Math.round } } }
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: Math.ceil((Math.max(...chartMasaDagangData)||30) * 1.15), grid: {color: '#333'}, ticks: {color: '#fff'} }, x: { grid: {display: false}, ticks: {color: '#fcf6ba'} } }, plugins: { legend: {display: false}, datalabels: { color: '#ffffff', anchor: 'end', align: 'bottom', font: { weight: 'bold', size: 9 }, formatter: Math.round } } }
                 });
 
             } else {
@@ -330,7 +385,7 @@
             }
 
             const totalBonus = hariKerjaSemua.size * 24000; const komisiPlusBonus = totalKomisi + totalBonus;
-            document.getElementById('valPenjualan').innerText = `${totalCup} Cup`; document.getElementById('valKomisi').innerText = formatRupiah(totalKomisi); document.getElementById('valTotalBersih').innerText = formatRupiah(totalKomisi + totalBonus); document.getElementById('valHutang').innerText = formatRupiah(hutangRealtime);
+            document.getElementById('valKomisi').innerText = formatRupiah(totalKomisi); document.getElementById('valTotalBersih').innerText = formatRupiah(totalKomisi + totalBonus); document.getElementById('valHutang').innerText = formatRupiah(hutangRealtime);
 
             const multiplierTarget = isAdmin ? 6 : 1; let targetTerdekat = 0; let statusTeks = ""; let gapTargetPenjualan = 0;
             if (totalCup < (900 * multiplierTarget)) { targetTerdekat = 900 * multiplierTarget; gapTargetPenjualan = targetTerdekat - totalCup; statusTeks = `Belum mencapai target ${targetTerdekat}`; } 
@@ -356,7 +411,7 @@
             if(chartRiderObj) chartRiderObj.destroy();
             chartRiderObj = new Chart(document.getElementById('chartRider').getContext('2d'), {
                 type: 'bar', data: { labels: labelsChart1, datasets: [{ data: dataChart1, backgroundColor: arrayPeringkat.map(p => (isAdmin || p.nama === rider) ? '#f97316' : '#FFD700'), borderRadius: 4 }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: Math.ceil((Math.max(...dataChart1)||100) * 1.15), grid: {color: '#333'}, ticks: {color: '#fff'} }, x: { grid: {display: false}, ticks: {color: '#f97316'} } }, plugins: { legend: {display: false}, datalabels: { color: '#ffffff', anchor: 'end', align: 'bottom', font: { weight: 'bold', size: 9 }, formatter: Math.round } } }
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: Math.ceil((Math.max(...dataChart1)||100) * 1.15), grid: {color: '#333'}, ticks: {color: '#fff'} }, x: { grid: {display: false}, ticks: {color: '#fcf6ba'} } }, plugins: { legend: {display: false}, datalabels: { color: '#ffffff', anchor: 'end', align: 'bottom', font: { weight: 'bold', size: 9 }, formatter: Math.round } } }
             });
 
             const periodeDipilih = document.getElementById('periodeSelect').value; const elTrend = document.getElementById('cardTrend');
@@ -367,7 +422,7 @@
                 if(chartTrendObj) chartTrendObj.destroy();
                 chartTrendObj = new Chart(document.getElementById('chartTrendHarian').getContext('2d'), {
                     type: 'line', data: { labels: sortedTgl, datasets: [{ label: 'Cup Harian', data: dataTrend, borderColor: '#FFD700', backgroundColor: 'rgba(255, 215, 0, 0.1)', fill: true, tension: 0.3, pointBackgroundColor: '#fff' }] },
-                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: Math.ceil((Math.max(...dataTrend)||100) * 1.15), grid: {color: '#333'}, ticks: {color: '#fff'} }, x: { grid: {color: '#222'}, ticks: {color: '#f97316'} } }, plugins: { legend: {display: false}, datalabels: { display: false } } }
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: Math.ceil((Math.max(...dataTrend)||100) * 1.15), grid: {color: '#333'}, ticks: {color: '#fff'} }, x: { grid: {color: '#222'}, ticks: {color: '#fcf6ba'} } }, plugins: { legend: {display: false}, datalabels: { display: false } } }
                 });
             } else elTrend.classList.add('hidden');
 
@@ -376,28 +431,31 @@
             if(chartMenuObj) chartMenuObj.destroy();
             chartMenuObj = new Chart(document.getElementById('chartMenu').getContext('2d'), {
                 type: 'bar', data: { labels: arrayMenu.map(p => p.menu.replace('SI ', '')), datasets: [{ data: arrayMenu.map(p => p.cup), backgroundColor: '#f97316', borderRadius: 4 }] },
-                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true, grid: {color: '#333'}, ticks: {color: '#fff'} }, y: { grid: {display: false}, ticks: { font: {size: 9}, color: '#f97316' } } }, plugins: { legend: {display: false}, datalabels: { color: '#ffffff', anchor: 'end', align: 'left', font: { weight: 'bold', size: 9 }, formatter: Math.round } } }
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { beginAtZero: true, grid: {color: '#333'}, ticks: {color: '#fff'} }, y: { grid: {display: false}, ticks: { font: {size: 9}, color: '#fcf6ba' } } }, plugins: { legend: {display: false}, datalabels: { color: '#ffffff', anchor: 'end', align: 'left', font: { weight: 'bold', size: 9 }, formatter: Math.round } } }
             });
 
             const tbody = document.getElementById('tabelDataSetoran'); tbody.innerHTML = '';
             if(detailTerpilih.length > 0) {
-                detailTerpilih.sort((a,b) => { let diff = new Date(b.tanggal) - new Date(a.tanggal); return diff !== 0 ? diff : a.driver.localeCompare(b.driver); });
+                // Ensure no error if driver is undefined
+                detailTerpilih.sort((a,b) => { let diff = new Date(b.tanggal) - new Date(a.tanggal); let drvA = a.driver||""; let drvB = b.driver||""; return diff !== 0 ? diff : drvA.localeCompare(drvB); });
                 let tglSkrg = ""; let drvSkrg = "";
                 detailTerpilih.forEach(d => {
                     if(d.status === "STOK_AWAL_BARU" && d.total_terjual === 0) return; 
                     if (d.tanggal !== tglSkrg || (isAdmin && d.driver !== drvSkrg)) {
-                        tbody.innerHTML += `<tr class="bg-[#111111]"><td colspan="8" class="p-2 text-center text-[10px] font-black text-orange-sifour border-y border-emas tracking-widest">${isAdmin ? `TGL: ${formatDateDisplay(d.tanggal)} - ${d.driver.split(' ')[0]}` : `TANGGAL: ${formatDateDisplay(d.tanggal)}`}</td></tr>`;
+                        let shortName = d.driver ? d.driver.split(' ')[0] : 'Tidak Diketahui';
+                        tbody.innerHTML += `<tr class="bg-[#111111]"><td colspan="8" class="p-2 text-center text-[10px] font-black text-orange-sifour border-y border-[#bf953f] tracking-widest">${isAdmin ? `TGL: ${formatDateDisplay(d.tanggal)} - ${shortName}` : `TANGGAL: ${formatDateDisplay(d.tanggal)}`}</td></tr>`;
                         tglSkrg = d.tanggal; drvSkrg = d.driver;
                     }
+                    let prodName = d.produk ? d.produk.replace('SI ','') : '-';
                     tbody.innerHTML += `<tr class="border-b border-[#333333] hover:bg-[#222222]">
-                        <td class="p-2 text-gray-200 border-r border-[#333]">${d.produk.replace('SI ','')}</td>
+                        <td class="p-2 text-gray-200 border-r border-[#333]">${prodName}</td>
                         <td class="p-2 text-center text-gray-500 border-r border-[#333]">${d.stok_awal}</td>
                         <td class="p-2 text-center text-blue-400 border-r border-[#333]">${d.bonus}</td>
                         <td class="p-2 text-center text-gray-400 border-r border-[#333]">${d.sisa}</td>
                         <td class="p-2 text-center text-emerald-400 border-r border-[#333]">${d.terjual_tunai}</td>
                         <td class="p-2 text-center text-purple-400 border-r border-[#333]">${d.terjual_qris}</td>
                         <td class="p-2 text-center text-red-400 border-r border-[#333]">${d.wastage || 0}</td>
-                        <td class="p-2 text-center font-black text-orange-500">${d.total_terjual}</td>
+                        <td class="p-2 text-center font-black text-[#f57c00]">${d.total_terjual}</td>
                     </tr>`;
                 });
             } else tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-gray-500 font-bold">Tidak ada setoran.</td></tr>';
@@ -405,8 +463,20 @@
             document.getElementById('tabelHeader').classList.remove('frozen');
         }
 
-        function downloadPDFTable() { var element = document.getElementById('tabelUtamaID'); var opt = { margin: 0.5, filename: 'DataSetoran_SIFOURAM.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } }; html2pdf().set(opt).from(element).save(); }
-        function printTableData() { var printContents = document.getElementById('tabelExportContainer').innerHTML; var originalContents = document.body.innerHTML; document.body.innerHTML = "<html><head><title>Print Data</title></head><body style='background:#111; color:white; font-family:sans-serif;'>" + printContents + "</body></html>"; window.print(); document.body.innerHTML = originalContents; window.location.reload(); }
+        function downloadPDFTable() {
+            var element = document.getElementById('tabelUtamaID');
+            var opt = { margin: 0.5, filename: 'DataSetoran_SIFOURAM.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' } };
+            html2pdf().set(opt).from(element).save();
+        }
+
+        function printTableData() {
+            var printContents = document.getElementById('tabelExportContainer').innerHTML; 
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = "<html><head><title>Print Data</title></head><body style='background:#111; color:white; font-family:sans-serif;'>" + printContents + "</body></html>";
+            window.print(); 
+            document.body.innerHTML = originalContents; 
+            window.location.reload(); 
+        }
     </script>
 </body>
 </html>
